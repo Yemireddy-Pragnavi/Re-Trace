@@ -81,3 +81,11 @@ def verify(rows):
         previous = row['hash']
     return {'status': 'VALID', 'checked': len(rows), 'head': previous,
             'scope': 'Internal chain consistency; use an externally saved signed report to detect rollback or truncation'}
+
+
+def case_timeline(case_id):
+    rows = events(case_id)
+    sessions = {r.get('session_id') for r in rows if r.get('session_id')}
+    identity = [dict(r, chain_scope='identity') for r in events(None)
+                if r.get('session_id') in sessions and r['action'] in ('SESSION_STARTED','SESSION_ENDED','ALL_SESSIONS_REVOKED')]
+    return sorted([dict(r, chain_scope='case') for r in rows] + identity, key=lambda r: (r['timestamp'], r['sequence']))

@@ -148,22 +148,35 @@ def sanitize(path: Path, unlink=False):
             'assurance': 'Logical sandbox verification only; not physical-media sanitization certification'}
 
 def fixture():
-    """Generate genuine small files embedded without a filesystem in a raw image."""
+    """Deterministic eight-artifact fixture: 3 JPEG, 2 PNG, 2 PDF, 1 ZIP."""
     payloads = []
-    for kind in ('PNG', 'JPEG'):
+    for i, kind in enumerate(('PNG', 'PNG', 'JPEG', 'JPEG', 'JPEG')):
         stream = io.BytesIO()
-        Image.new('RGB', (24, 24), (36, 170, 190)).save(stream, format=kind)
+        Image.new('RGB', (24 + i, 24 + i), (36 + i * 20, 170 - i * 12, 190)).save(stream, format=kind)
         payloads.append(stream.getvalue())
-    pdf = io.BytesIO()
-    writer = PdfWriter()
-    writer.add_blank_page(width=200, height=200)
-    writer.write(pdf)
-    payloads.append(pdf.getvalue().rstrip())
+    for i in range(2):
+        pdf = io.BytesIO()
+        writer = PdfWriter()
+        writer.add_blank_page(width=200+i*20, height=200)
+        writer.write(pdf)
+        payloads.append(pdf.getvalue().rstrip())
     archive = io.BytesIO()
     with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as z:
-        z.writestr('evidence.txt', 'Re-Trace reproducible forensic test fixture')
+        info = zipfile.ZipInfo('evidence.txt', date_time=(2026,1,1,0,0,0))
+        info.compress_type = zipfile.ZIP_DEFLATED
+        z.writestr(info, 'Re-Trace reproducible forensic test fixture')
     payloads.append(archive.getvalue())
     image = b'RETRACE TEST IMAGE\0' + b'\0' * 4096
     for blob in payloads:
         image += blob + b'\0' * 4096
     return image, payloads
+
+def ground_truth(data, recovered):
+    known_image, payloads = fixture()
+    if sha(data) != sha(known_image):
+        return None
+    expected = {sha(p) for p in payloads}
+    actual = {f['sha256'] for f in recovered}
+    matched = len(expected & actual)
+    return {'known_artifacts': 8, 'recovered_artifacts': len(recovered), 'matched_artifacts': matched,
+            'missed_count': 8 - matched, 'false_positives': len(actual - expected), 'recovery_percentage': matched / 8 * 100}

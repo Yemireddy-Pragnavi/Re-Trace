@@ -36,7 +36,7 @@ def test_corruption_and_bounded_scan():
     data,_=engines.fixture()
     broken=bytearray(data);broken[data.find(engines.SIGNATURES['png'])+20]^=1
     scan=engines.carve(bytes(broken),['png'])
-    assert not scan['files'] and scan['rejected']
+    assert len(scan['files']) == 1 and scan['rejected'][0]['offset'] == data.find(engines.SIGNATURES['png'])
     assert not engines.carve(b'%PDF-bad'*300,['pdf'])['complete']
     assert not engines.carve(b'%PDF-1.7 truncated')['files']
 
@@ -60,9 +60,9 @@ def test_end_to_end_recovery_erase_reports(ctx):
     op={'module':'recovery','source_ids':[source['id']]}
     response=client.post('/api/cases/'+cid+'/jobs',headers=h,json=op)
     assert response.status_code==200,response.text
-    assert len(response.json()['result']['items'][0]['files'])==4
+    assert len(response.json()['result']['items'][0]['files'])==8
     detail=client.get('/api/cases/'+cid,headers=h).json()
-    assert len(detail['evidence'])==4
+    assert len(detail['evidence'])==8
     item=detail['evidence'][0]
     downloaded=client.get('/api/evidence/'+item['id']+'/download',headers=h)
     assert engines.sha(downloaded.content)==item['details']['sha256']
@@ -128,3 +128,15 @@ def test_roles_never_from_client(ctx):
     assert client.post('/api/users/'+outsider['user']['id']+'/role',headers=oh,json={'role':'ADMIN'}).status_code==403
     assert client.post('/api/users/'+outsider['user']['id']+'/role',headers=h,json={'role':'INVESTIGATOR'}).status_code==200
     assert client.get('/api/auth/me',headers=oh).status_code==401
+
+
+def test_eight_artifact_determinism_and_metrics():
+    image,payloads=engines.fixture()
+    other,_=engines.fixture()
+    assert image==other
+    found=engines.carve(image)['files']
+    from collections import Counter
+    assert Counter(f['type'] for f in found)=={'jpeg':3,'png':2,'pdf':2,'zip':1}
+    metrics=engines.ground_truth(image,found)
+    assert metrics['recovery_percentage']==100 and metrics['false_positives']==0 and metrics['missed_count']==0
+    assert engines.ground_truth(b'unknown source',[]) is None

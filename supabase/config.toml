@@ -1,0 +1,4 @@
+project_id = "Re-Trace"
+[functions.retrace-api]
+verify_jwt = false
+# The handler verifies every protected request with getUser AND auth.sessions.

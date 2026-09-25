@@ -14,7 +14,7 @@ envelope=json.loads(args.json_report.read_text())
 key=base64.b64decode(envelope['public_key'],validate=True)
 if hashlib.sha256(key).hexdigest()!=args.trusted_fingerprint:
     raise SystemExit('FAIL: public key does not match trusted fingerprint')
-payload=json.dumps(envelope['payload'],sort_keys=True,separators=(',',':'),ensure_ascii=True).encode()
+payload=json.dumps(envelope['payload'],sort_keys=True,separators=(',',':'),ensure_ascii=envelope.get('canonicalization')!='recursive-key-sort-json').encode()
 try:
     Ed25519PublicKey.from_public_bytes(key).verify(base64.b64decode(envelope['signature'],validate=True),payload)
 except Exception:

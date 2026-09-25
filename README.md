@@ -2,9 +2,21 @@
 
 **SIH26149 · Integrated Secure Data Erasure + Advanced File Recovery**
 
-A runnable local SIH prototype with three separate modules, real sandbox processing, persistent cases, role checks, automatic event timelines, hash-chained audits and signed forensic reports.
+A runnable local and cloud SIH prototype with three separate modules, real sandbox processing, persistent cases, role checks, automatic event timelines, hash-chained audits and signed forensic reports.
 
-**Status: functional sandbox prototype, not a complete implementation of every master-prompt requirement.** It is not a physical-drive eraser or a certified forensic tool. Original uploaded evidence is retained; erase operations affect disposable working copies only.
+**Status: functional local and connected cloud sandbox prototype, not a complete implementation of every master-prompt requirement.** It is not a physical-drive eraser or a certified forensic tool. Original uploaded evidence is retained; erase operations affect disposable working copies only.
+
+## Connected cloud version (v0.2)
+
+[Open the private website preview](https://retrace-cloud.vvreddy1584.chatgpt.site)
+
+The Supabase project `noqdtxwvgqkgrkpsbhpi` now has the cloud schema, RLS, private storage, and the deployed `retrace-api` function. See [cloud setup and use](docs/cloud-auth.md). The original Python/SQLite mode remains available.
+
+Cloud features: verified-email Auth with live session checks, isolated cases, real PNG/JPEG/PDF/ZIP carving, Storage working-copy overwrite/read-back/removal, automatic timelines, hash-chained audits, Ed25519-signed reports, and synthetic validation. The cloud limit is 8 MiB per operation batch. Physical-media cleansing, MFA/passkeys and fragmented reconstruction remain out of scope.
+
+Latest delivery and exact demo steps: [DELIVERY-STATUS.md](docs/DELIVERY-STATUS.md).
+
+The public landing is at `/`; sign-in is at `/login`; existing workspaces are under `/app/*`. The fixture now contains **eight** actual artifacts (3 JPEG, 2 PNG, 2 PDF, 1 ZIP).
 
 ## Download or clone into VS Code
 
@@ -86,15 +98,15 @@ In another terminal, `cd frontend`, `npm ci`, then `npm run dev`.
 
 ## Explicit limits and unfinished requirements
 
-- **Local database is SQLite**, not the requested Supabase PostgreSQL/RLS deployment. File contents live in private server directories. This makes the repository runnable without cloud accounts. No PostgreSQL migration or cloud deployment is claimed.
-- Optional **Supabase Auth** login/registration integration is included but was not tested against a live project. See [cloud-auth.md](docs/cloud-auth.md). Supabase Storage is not integrated.
+- **Local mode uses SQLite. Cloud mode uses Supabase PostgreSQL/RLS, Edge Functions and private Storage.** The Python API remains the local implementation; the deployed cloud API is TypeScript/Deno.
+- **Supabase Auth** is configured for confirmed email. A real-user email delivery/confirmation walkthrough still needs the account holder. No MFA or passkeys are claimed. See [cloud-auth.md](docs/cloud-auth.md).
 - **Passkeys, MFA, ID verification, local email verification and password reset are not implemented.** Never describe local login as biometric or verified identity.
 - **Native physical-drive erasure is not implemented.** Media types are selected profiles, not hardware detection. ATA/NVMe sanitize and crypto-erase are recommendations only.
 - **Fragmented-file reconstruction is roadmap only.** See [fragmented-reconstruction.md](docs/fragmented-reconstruction.md). PDF extraction currently handles the first EOF/revision; split ZIPs, ZIP64, encrypted files, E01/AFF and filesystem reconstruction are unsupported.
 - File metadata cleansing covers the working-copy directory entry, timestamps and available xattrs. It does not cleanse source uploads, audit records, host journals, caches, thumbnails, swap, snapshots, backups or flash remapped cells. Folder hierarchy is flattened into independent safe upload IDs.
 - Activity tracking covers this application's operations, not all activity on the user's computer. Session/admin events are shown separately from case events.
-- Jobs run synchronously under a single-process lock. The UI shows an indeterminate busy indicator, not a fabricated progress percentage. Interrupted jobs are marked on API restart; automatic resume/cancellation is not implemented.
-- Hash chains are tamper-evident, not immutable. A host/database administrator can replace data. External trusted report fingerprints/checkpoints are needed to detect whole-chain replacement or truncation. Signing keys currently reside on the same host.
+- Local jobs run synchronously under a single-process lock; cloud jobs run within Edge Function request limits. The UI shows an indeterminate busy indicator, not a fabricated progress percentage. Interrupted jobs are marked on API restart; automatic resume/cancellation is not implemented.
+- Hash chains are tamper-evident, not immutable. A host/database administrator can replace data. External trusted report fingerprints/checkpoints are needed to detect whole-chain replacement or truncation. Local signing keys reside on the host; cloud report keys are stored in a private service-only database table.
 - Limits: 32 MiB per source, 256 MiB retained source quota, 256 signature candidates per scan, 1,000 ZIP entries / 32 MiB expansion, bounded image pixels. Repeated recovered outputs and reports still need production retention quotas. Treat untrusted hostile forensic images as requiring isolated worker processes before deployment.
 - Standards names are guidance references, not certification or a validated standards-conformance mapping. The supplied requirements are the project baseline; the live official SIH portal wording was not independently retrieved.
 

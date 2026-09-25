@@ -169,7 +169,7 @@ def case_detail(case_id:str,actor=Depends(auth.authenticate)):
         jobs=[{**dict(r),'result':json.loads(r['result'])} for r in db.execute('SELECT * FROM jobs WHERE case_id=? ORDER BY created DESC',(case_id,))]
         evidence=[{**dict(r),'details':json.loads(r['details'])} for r in db.execute('SELECT * FROM evidence WHERE case_id=?',(case_id,))]
         report_rows=[dict(r) for r in db.execute('SELECT id,created,pdf_hash FROM reports WHERE case_id=? ORDER BY created DESC',(case_id,))]
-    return {'case':case,'sources':sources,'jobs':jobs,'evidence':evidence,'reports':report_rows,'events':store.events(case_id)}
+    return {'case':case,'sources':sources,'jobs':jobs,'evidence':evidence,'reports':report_rows,'events':store.case_timeline(case_id)}
 
 @app.post('/api/cases/{case_id}/open')
 def open_case(case_id:str,actor=Depends(auth.authenticate)):
@@ -263,7 +263,7 @@ def run_job(case_id:str,data:Operation,actor=Depends(auth.authenticate)):
                             db.execute('INSERT INTO evidence VALUES(?,?,?,?)',(eid,case_id,jid,store.canonical(hit)))
                         store.record(actor,'FILE_RECOVERED',case_id,{'job_id':jid,'source_id':source['id'],**hit})
                     recovered.append(hit)
-                item={**scan,'files':recovered,'validation':'WARNING' if recovered else ('PASS' if scan['complete'] else 'INCONCLUSIVE'),
+                item={**scan,'ground_truth':engines.ground_truth(original,recovered),'files':recovered,'validation':'WARNING' if recovered else ('PASS' if scan['complete'] else 'INCONCLUSIVE'),
                       'validation_scope':'Supported contiguous formats only; absence of results is not proof of complete erasure'}
             item['source_id']=source['id']
             item['source_unchanged']=engines.sha(source_path(source['id']).read_bytes())==source['hash']
@@ -306,12 +306,13 @@ def benchmark(case_id:str,actor=Depends(auth.authenticate)):
         png_start=data.find(engines.SIGNATURES['png'])
         corrupted[png_start+20]^=1
         invalid=engines.carve(bytes(corrupted),['png'])
-        result={'fixture':'Generated raw image: 4 known files, no filesystem metadata','bytes_processed':len(data),
-                'checks':{'four_formats_recovered':len(hashes)==4,'hashes_match_ground_truth':hashes==expected,
-                'malformed_png_rejected':not invalid['files'],'readback_zeroed':cleared['readback_verified'],
+        result={'fixture':'Generated raw image: 8 known files, no filesystem metadata','bytes_processed':len(data),
+                'checks':{'eight_artifacts_recovered':len(hashes)==8,'hashes_match_ground_truth':hashes==expected,
+                'malformed_png_rejected':len(invalid['files'])==1 and any(r['offset']==png_start for r in invalid['rejected']),'readback_zeroed':cleared['readback_verified'],
                 'post_erase_no_supported_artifacts':cleared['validation']=='PASS','working_copy_removed':cleared['absence_verified']},
                 'duration_seconds':time.perf_counter()-start,'limits':'Small synthetic contiguous-file fixture; not independent certification or physical-media validation'}
         result['throughput_mib_s']=len(data)/1048576/max(result['duration_seconds'],1e-9)
+        result['ground_truth']=engines.ground_truth(data,scan['files'])
         result['passed']=all(result['checks'].values())
         with store.connection() as db:
             db.execute('INSERT INTO jobs VALUES(?,?,?,?,?,?)',(jid,case_id,'benchmark','COMPLETED',store.now(),store.canonical(result)))
@@ -324,7 +325,7 @@ def benchmark(case_id:str,actor=Depends(auth.authenticate)):
 @app.get('/api/cases/{case_id}/timeline')
 def timeline(case_id:str,user:str='',action:str='',source:str='',start:str='',end:str='',actor=Depends(auth.authenticate)):
     case_access(case_id,actor)
-    rows=store.events(case_id)
+    rows=store.case_timeline(case_id)
     return [r for r in rows if (not user or user.lower() in r['user'].lower()) and (not action or action in r['action']) and (not source or source in store.canonical(r['details'])) and (not start or r['timestamp']>=start) and (not end or r['timestamp']<=end)]
 
 @app.post('/api/cases/{case_id}/audit/verify')
@@ -372,7 +373,7 @@ def generate_report(case_id:str,actor=Depends(auth.authenticate)):
     payload={'id':rid,'case':detail['case'],'operator':{k:actor[k] for k in ('id','email','role','session_id')},'created':store.now(),
              'scope':'SIH sandbox demonstrator. Not a certified sanitization certificate. Original sources retained.',
              'sources':detail['sources'],'jobs':detail['jobs'],'evidence':detail['evidence'],'timeline':detail['events'],
-             'audit':store.verify(detail['events'])}
+             'audit':store.verify(store.events(case_id))}
     blob=reports.pdf(payload)
     payload['pdf_sha256']=engines.sha(blob)
     envelope=reports.sign(payload)

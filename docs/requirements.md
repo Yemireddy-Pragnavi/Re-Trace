@@ -31,3 +31,7 @@ Baseline: the user's priority instruction and attached master prompt. The priori
 ## Master-prompt differences
 
 The repository prioritizes a clone-and-run local prototype. The requested full Supabase PostgreSQL/RLS schema, hosted link, passkeys/MFA, password reset, separate device/session management pages, organization-level admin controls, durable background queue, cloud storage and native agent are not delivered. They must be implemented and independently tested before representing this as a fully complete or production-ready build.
+
+## v0.2 cloud addendum (supersedes cloud-persistence gaps above)
+
+Supabase PostgreSQL/RLS and private Storage are now deployed, and the static frontend has a connected Edge Function API. Cloud auth requires verified email and an active Supabase session on every protected request. New users are investigators isolated to their own cases. Cloud workflow metadata and artifacts persist across logins. The cloud carving engine validates the same four contiguous formats; cloud erasure operates on private storage working objects rather than host filesystem copies. Cloud signed reports and audit verification are implemented. Native erasure, OS-wide trace cleansing, ID verification, MFA/passkeys, password-reset UI, durable job queue and fragmented reconstruction remain incomplete. Real-user signed-in cloud end-to-end testing is pending.

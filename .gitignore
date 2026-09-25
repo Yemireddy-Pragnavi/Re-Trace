@@ -13,3 +13,6 @@ dist/
 *.db-shm
 *.pem
 .DS_Store
+
+supabase/.temp/
+*.tsbuildinfo

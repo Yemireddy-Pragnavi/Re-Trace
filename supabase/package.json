@@ -1,0 +1,1 @@
+{"name":"retrace-cloud-functions","private":true,"type":"module","scripts":{"test:engines":"node tests/engines-node.mjs"},"dependencies":{"@supabase/supabase-js":"2.57.4","fflate":"0.8.2","jpeg-js":"0.4.4","pdf-lib":"1.17.1","pngjs":"7.0.0"},"devDependencies":{"@types/node":"22.18.6","typescript":"5.9.2"}}
