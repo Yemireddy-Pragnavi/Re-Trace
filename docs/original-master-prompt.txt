@@ -1,0 +1,798 @@
+Use this as a **single master prompt for Astra**. I’ve scoped it so the prototype is actually buildable and deployable as a link, while keeping the backend, authentication, audit trail, and timeline construction real rather than decorative.
+
+> **Build a production-quality SIH prototype for the following project. Continue until the application is fully functional end-to-end. Do not create only a frontend mockup. The backend, authentication, database persistence, audit trail, timeline generation, sanitization demo flow, recovery demo flow, reports, and role-based access must all work.**
+>
+> # PROJECT
+> **Secure Media Assurance Platform**  
+> **Integrated Secure Data Erasure + Advanced File Recovery**
+>
+> The platform has three pillars:
+>
+> 1. **Sanitization** — securely erase an entire test media image or selected files/folders using the correct media-aware method.
+> 2. **Forensics** — recover deleted/damaged files from uploaded forensic disk images in read-only mode.
+> 3. **Assurance** — prove who performed each action, on which device/case, when it happened, what result was produced, and whether audit records were modified.
+>
+> This is an **SIH prototype**, so it must be fully demonstrable through a hosted link. Do not pretend a hosted browser can directly erase the visitor’s physical HDD/SSD. For the deployable prototype, perform real operations on **uploaded files, uploaded test disk images, server-side sandbox copies, and provided demo datasets**. Create a clean adapter interface for future native HDD/SSD/NVMe execution through a local privileged agent, but clearly label physical-device commands as “Local Agent / Future Deployment” unless actually connected.
+>
+> ---
+>
+> # REQUIRED TECH STACK
+>
+> Use:
+>
+> - **Frontend:** React + Vite + TypeScript + Tailwind CSS
+> - **Backend:** Python + FastAPI
+> - **Authentication + Database:** Supabase Auth + PostgreSQL
+> - **Storage:** Supabase Storage or secure server object storage for recovered files/reports
+> - **Audit hashing:** SHA-256
+> - **Recovery:** Python binary parsing + custom signature tables; use safe libraries where useful
+> - **Reports:** PDF + JSON generation
+> - **Charts/timeline:** Recharts or a lightweight timeline component
+>
+> Keep the architecture modular:
+>
+> `Frontend → API → Auth/Case Manager → Inspection → Policy Engine → Sanitization/Recovery → Verification → Audit → Timeline → Reports`
+>
+> ---
+>
+> # 1. STRONG AUTHENTICATION
+>
+> This is one of the most important parts.
+>
+> Implement:
+>
+> - email/password registration and login
+> - email verification
+> - secure password reset
+> - short-lived sessions
+> - logout
+> - session revocation
+> - role-based access
+> - optional OTP/MFA
+> - **WebAuthn/passkey authentication** for device biometric authentication where supported
+>
+> Do **not** store fingerprints, face images, or raw biometric templates.
+>
+> Use device biometric/passkey verification through WebAuthn so the operating system or trusted authenticator performs the biometric check and the application receives only the successful authentication assertion.
+>
+> Roles:
+>
+> - `ADMIN`
+> - `INVESTIGATOR`
+> - `VIEWER`
+>
+> Permissions:
+>
+> **Admin**
+> - manage users
+> - see all cases
+> - see all timelines
+> - see audit verification
+> - manage policies
+>
+> **Investigator**
+> - create/open cases
+> - perform sanitization
+> - perform recovery
+> - view their permitted cases
+> - generate reports
+>
+> **Viewer**
+> - read-only access to assigned cases/reports
+>
+> Every authenticated session must have:
+>
+> - session ID
+> - user ID
+> - role
+> - login timestamp
+> - logout timestamp
+> - authentication method
+> - IP/user-agent metadata where appropriate
+>
+> ---
+>
+> # 2. MAIN APPLICATION NAVIGATION
+>
+> Left navigation:
+>
+> - Home
+> - New Case
+> - Cases
+> - Secure Erase
+> - Recovery
+> - Validation
+> - Timeline
+> - Reports
+> - Audit Trail
+> - Settings
+> - Admin
+>
+> Use a professional cybersecurity/digital-forensics interface.
+>
+> Dark navy/graphite theme with subtle cyan/blue accents, clean cards, clear status states, minimal animation, excellent readability.
+>
+> The frontend must feel like a real government/forensic product, not a student dashboard.
+>
+> ---
+>
+> # 3. CASE MANAGEMENT
+>
+> Before performing operations, users should create/open a case.
+>
+> Case fields:
+>
+> - Case ID
+> - Case title
+> - Description
+> - Created by
+> - Assigned investigator
+> - Department
+> - Priority
+> - Status
+> - Created time
+> - Updated time
+>
+> Case page should contain tabs:
+>
+> - Overview
+> - Devices / Sources
+> - Operations
+> - Recovered Evidence
+> - Timeline
+> - Audit
+> - Reports
+>
+> ---
+>
+> # 4. TARGET / SOURCE INSPECTION
+>
+> Allow users to work with:
+>
+> ### Sanitization
+>
+> - uploaded test disk image
+> - uploaded file
+> - uploaded folder/archive representing files
+> - demo HDD dataset
+> - demo SSD dataset
+> - demo NVMe dataset
+> - demo USB dataset
+>
+> ### Recovery
+>
+> - RAW disk image
+> - `.img`
+> - supported forensic test image
+>
+> For each target show:
+>
+> - filename/device label
+> - detected type
+> - simulated media type
+> - filesystem where detectable
+> - capacity
+> - SHA-256 hash
+> - upload time
+> - case association
+>
+> Create a clean **media capability detector**.
+>
+> ---
+>
+> # 5. SMART SANITIZATION POLICY ENGINE
+>
+> This is a key differentiator.
+>
+> User chooses:
+>
+> - Entire media/image
+> - Selected file
+> - Selected folder
+>
+> Also ask:
+>
+> **Purpose**
+> - Reuse internally
+> - Transfer externally
+> - Dispose
+>
+> **Data sensitivity**
+> - Normal
+> - Sensitive
+> - Highly sensitive
+>
+> Then automatically recommend the sanitization method.
+>
+> Example rule logic:
+>
+> `HDD → overwrite / NIST Clear-style method`
+>
+> `SSD → ATA Secure Erase or crypto-erase when native/local-agent capability exists`
+>
+> `NVMe → NVMe sanitize/format or crypto-erase when native/local-agent capability exists`
+>
+> `File/Folder → filesystem-aware secure delete where meaningful`
+>
+> In the hosted prototype, use test-image/file sanitization and simulation for hardware-specific commands, but make the policy decision logic real.
+>
+> Display:
+>
+> - detected media
+> - selected scope
+> - recommended method
+> - reason
+> - applicable standard/guidance
+> - risk/warning
+> - user confirmation
+>
+> Reference the project’s standards mapping:
+>
+> - NIST SP 800-88 Rev.2
+> - IEEE 2883
+> - DoD 5220.22-M only as legacy overwrite reference
+>
+> Never claim official certification.
+>
+> Use wording like:
+>
+> **“Method mapped to NIST SP 800-88 guidance.”**
+>
+> ---
+>
+> # 6. SANITIZATION ENGINE
+>
+> For the hosted prototype implement real sanitization on server-side sandbox copies.
+>
+> Support:
+>
+> ### File sanitization
+>
+> - overwrite temporary file contents
+> - rename
+> - unlink/delete
+> - verify absence
+>
+> ### Test image sanitization
+>
+> - overwrite selected ranges or full uploaded test image
+> - compute before/after SHA-256
+> - perform read-back verification
+>
+> Do not expose destructive filesystem paths outside the sandbox.
+>
+> Add:
+>
+> - progress
+> - start time
+> - finish time
+> - bytes processed
+> - method used
+> - verification state
+> - success/failure
+>
+> ---
+>
+> # 7. FORENSIC RECOVERY ENGINE
+>
+> Recovery must work, not just show fake results.
+>
+> User chooses what they want to recover:
+>
+> - All supported
+> - Images
+> - Documents
+> - Archives
+> - Custom supported types
+>
+> Initial supported formats:
+>
+> - JPEG
+> - PNG
+> - PDF
+> - ZIP
+>
+> Recovery workflow:
+>
+> `Read-only image → raw byte scan → signature detection → candidate extraction → structure validation → confidence scoring → recovered output`
+>
+> Use actual file signatures.
+>
+> Implement at least:
+>
+> - header/signature detection
+> - basic footer/structure validation
+> - recovered-file extraction
+> - SHA-256 hash for recovered files
+> - confidence score
+>
+> Confidence should be explainable.
+>
+> Example:
+>
+> - valid header
+> - valid footer
+> - valid internal structure
+> - plausible size
+> - successful parse/open
+>
+> Show why a file received its confidence score.
+>
+> Never modify the original uploaded forensic source.
+>
+> Save recovered files to a separate evidence storage location.
+>
+> ---
+>
+> # 8. ADVERSARIAL SANITIZATION VALIDATION
+>
+> This is another core differentiator.
+>
+> After sanitization:
+>
+> `Sanitize → Normal verification → Recovery engine challenges sanitized media → Artifact detection → PASS / WARNING / INCONCLUSIVE`
+>
+> Reuse the recovery engine.
+>
+> Search for supported residual artifacts.
+>
+> Results:
+>
+> **PASS**
+> - no supported recoverable artifacts detected
+>
+> **WARNING**
+> - recoverable artifacts detected
+>
+> **INCONCLUSIVE**
+> - validation cannot determine confidently
+>
+> Do not claim absolute physical erasure.
+>
+> Use wording:
+>
+> **“No recoverable supported artifacts were detected by the implemented validation methods.”**
+>
+> Store this result in the case and audit record.
+>
+> ---
+>
+> # 9. ACTIVITY TRACKING
+>
+> Every meaningful user action must automatically generate an event.
+>
+> Examples:
+>
+> - user authenticated
+> - session started
+> - case created
+> - case opened
+> - file uploaded
+> - source inspected
+> - media type detected
+> - sanitization policy generated
+> - sanitization approved
+> - sanitization started
+> - sanitization completed
+> - recovery started
+> - file recovered
+> - validation started
+> - validation completed
+> - report generated
+> - evidence downloaded/exported
+> - user logged out
+>
+> Every event should store:
+>
+> - event ID
+> - case ID
+> - session ID
+> - user ID
+> - user display name
+> - role
+> - device/source ID
+> - operation/job ID
+> - action type
+> - human-readable description
+> - parameters
+> - result
+> - timestamp
+> - IP/user-agent if relevant
+> - previous event hash
+> - current event hash
+>
+> ---
+>
+> # 10. TIMELINE CONSTRUCTION — VERY IMPORTANT
+>
+> Build a real timeline engine.
+>
+> It should automatically construct a chronological case timeline from all logged events.
+>
+> Example:
+>
+> `09:31 User authenticated using passkey`
+>
+> `09:32 Case CASE-001 opened`
+>
+> `09:33 USB evidence source added`
+>
+> `09:34 Recovery operation started`
+>
+> `09:39 14 files recovered`
+>
+> `09:40 Evidence hashes generated`
+>
+> `09:42 Recovery report generated`
+>
+> `09:45 User logged out`
+>
+> Timeline page must support:
+>
+> - chronological vertical timeline
+> - filters by user
+> - filters by action
+> - filters by device
+> - filters by case
+> - filters by date/time
+> - operation grouping
+> - expandable event details
+> - hash verification status
+> - export timeline to PDF/JSON
+>
+> Build timeline from database events, not hardcoded frontend arrays.
+>
+> Clicking any timeline event should open:
+>
+> - actor
+> - action
+> - case
+> - device
+> - time
+> - parameters
+> - outcome
+> - event hash
+> - previous event hash
+>
+> ---
+>
+> # 11. TAMPER-EVIDENT AUDIT LOG
+>
+> Every event must be part of a SHA-256 hash chain.
+>
+> For every event:
+>
+> `current_hash = SHA256(previous_hash + canonical_event_payload)`
+>
+> Store:
+>
+> - previous hash
+> - current hash
+>
+> Create a backend endpoint:
+>
+> `POST /audit/verify`
+>
+> It must recompute the chain and return:
+>
+> - VALID
+> - BROKEN
+> - first invalid event
+>
+> Create an admin/demo page allowing a safe demonstration:
+>
+> - show original audit chain
+> - intentionally modify a copy of one event
+> - rerun verification
+> - show **TAMPERING DETECTED**
+>
+> Never modify the real primary audit log for demo purposes.
+>
+> ---
+>
+> # 12. DATABASE SCHEMA
+>
+> Create real migrations/tables for at least:
+>
+> `profiles`
+>
+> `roles`
+>
+> `cases`
+>
+> `case_members`
+>
+> `sessions`
+>
+> `devices`
+>
+> `evidence_sources`
+>
+> `jobs`
+>
+> `sanitization_policies`
+>
+> `sanitization_results`
+>
+> `recovery_jobs`
+>
+> `recovered_files`
+>
+> `validation_results`
+>
+> `timeline_events`
+>
+> `audit_events`
+>
+> `reports`
+>
+> Important relationships:
+>
+> `user → session → case → device/source → job → timeline events → audit events → reports`
+>
+> Enable Supabase RLS.
+>
+> Users should only see cases they are allowed to access.
+>
+> Admin can see all.
+>
+> ---
+>
+> # 13. SECURE EVIDENCE STORAGE
+>
+> Store large artifacts separately from PostgreSQL.
+>
+> Database stores:
+>
+> - metadata
+> - job status
+> - hashes
+> - timelines
+> - audit records
+> - report references
+>
+> Secure storage stores:
+>
+> - uploaded forensic images
+> - recovered files
+> - generated PDF reports
+> - JSON reports
+>
+> Do not store raw passwords or biometric information.
+>
+> ---
+>
+> # 14. REPORTING
+>
+> Generate real PDF and JSON reports.
+>
+> ### Sanitization certificate
+>
+> Include:
+>
+> - case
+> - authenticated operator
+> - authentication/session reference
+> - source/device
+> - method
+> - standard mapping
+> - start/end time
+> - verification
+> - adversarial validation result
+> - SHA-256 hashes
+> - audit-chain status
+> - timeline summary
+>
+> ### Recovery report
+>
+> Include:
+>
+> - case
+> - investigator
+> - source
+> - source hash
+> - selected artifact types
+> - files recovered
+> - file hashes
+> - confidence scores
+> - timestamps
+> - timeline summary
+> - audit verification
+>
+> ---
+>
+> # 15. DASHBOARD
+>
+> Dashboard cards:
+>
+> - Active Cases
+> - Sanitization Jobs
+> - Recovery Jobs
+> - Files Recovered
+> - Validation Pass/Warning
+> - Audit Integrity
+>
+> Also show:
+>
+> - Recent cases
+> - Recent activities
+> - Timeline preview
+> - Recent reports
+>
+> ---
+>
+> # 16. DEMO DATA
+>
+> Create safe seeded demo accounts and cases.
+>
+> Provide:
+>
+> - demo investigator
+> - demo viewer
+> - demo admin
+>
+> Seed one example case containing:
+>
+> - test storage image
+> - sanitization job
+> - recovery job
+> - recovered sample files
+> - validation events
+> - full timeline
+> - audit log
+> - report
+>
+> Do not hardcode passwords in frontend source.
+>
+> ---
+>
+> # 17. SIH LIVE DEMO FLOW
+>
+> Make sure this exact sequence works:
+>
+> 1. Login using password/OTP/passkey.
+> 2. Open a case.
+> 3. Upload/select a test disk image.
+> 4. System detects target properties.
+> 5. Smart sanitization policy recommends a method.
+> 6. User confirms.
+> 7. Sanitization runs.
+> 8. Normal verification runs.
+> 9. Recovery engine performs adversarial validation.
+> 10. PASS/WARNING is displayed.
+> 11. Audit event is generated.
+> 12. Timeline immediately updates.
+> 13. Generate/download sanitization certificate.
+> 14. Open another forensic image.
+> 15. Recover JPEG/PNG/PDF/ZIP files.
+> 16. Show confidence scores and hashes.
+> 17. Timeline updates with recovery events.
+> 18. Generate recovery report.
+> 19. Open Audit Integrity.
+> 20. Demonstrate tamper detection using a copied audit chain.
+>
+> ---
+>
+> # 18. UI QUALITY
+>
+> Make the frontend polished enough for an SIH jury.
+>
+> Requirements:
+>
+> - responsive
+> - professional
+> - fast
+> - accessible
+> - consistent typography
+> - cybersecurity/forensics appearance
+> - clear warnings before destructive demo operations
+> - progress indicators
+> - status badges
+> - empty states
+> - loading states
+> - error states
+> - toast notifications
+> - no broken buttons
+> - no fake statistics
+>
+> Avoid excessive animations.
+>
+> Focus on clarity and credibility.
+>
+> ---
+>
+> # 19. SECURITY REQUIREMENTS
+>
+> Implement:
+>
+> - RLS
+> - server-side authorization
+> - input validation
+> - file-size limits
+> - extension and magic-byte validation
+> - secure filenames
+> - path traversal protection
+> - CSRF-safe architecture where relevant
+> - rate limiting on authentication-sensitive endpoints
+> - strict CORS
+> - secure secrets through environment variables
+> - audit logging
+> - never trust frontend role values
+>
+> Sanitization/recovery jobs must only work inside controlled server-side directories.
+>
+> ---
+>
+> # 20. MVP VS FUTURE
+>
+> The working MVP must include:
+>
+> - strong authentication
+> - passkey/WebAuthn support where possible
+> - cases
+> - roles
+> - target inspection
+> - smart sanitization policy
+> - sandbox file/test-image sanitization
+> - JPEG/PNG/PDF/ZIP recovery
+> - confidence score
+> - adversarial verification
+> - SHA-256 hash-chain audit
+> - activity tracking
+> - automatic timeline construction
+> - secure storage
+> - PDF/JSON reports
+> - polished dashboard
+>
+> Future features can be shown but **must not be falsely represented as implemented**:
+>
+> - direct ATA Secure Erase on user hardware
+> - native NVMe sanitize
+> - APFS advanced sanitization
+> - fragmented-file reconstruction
+> - evidence graph
+> - cross-case correlation
+> - blockchain anchoring
+> - organization-wide multi-tenant deployment
+>
+> ---
+>
+> # FINAL DELIVERY REQUIREMENTS
+>
+> Do not stop after generating screens.
+>
+> Before declaring completion:
+>
+> - run database migrations
+> - configure authentication
+> - verify RLS
+> - test registration/login/logout
+> - test role restrictions
+> - test passkey flow where browser support allows
+> - test case creation
+> - test actual persisted timeline events
+> - test hash-chain verification
+> - test sanitization demo
+> - test recovery of sample JPEG/PNG/PDF/ZIP
+> - test adversarial verification
+> - test report generation
+> - test refresh/relogin persistence
+> - test direct URL protection
+> - remove console errors
+> - remove placeholder buttons
+>
+> Provide a final implementation status listing:
+>
+> **Working**
+>
+> **Partially working**
+>
+> **Future / simulated**
+>
+> Be explicit and honest.
+>
+> The most important parts of this prototype are **working backend persistence, strong authentication, complete activity tracking, automatic case timeline construction, correct authorization, working audit integrity, and a believable end-to-end sanitization/recovery demonstration.**
+>
+> Do not sacrifice these for unnecessary frontend effects.
+
+One change I strongly recommend for the submission: keep **physical HDD/SSD/NVMe destructive operations outside the hosted prototype** and demonstrate those through the media-policy layer plus sandbox/test images. A public SIH link can then work reliably for judges, while your PPT can show a **Local Privileged Agent** as the deployment path for real hardware sanitization.
