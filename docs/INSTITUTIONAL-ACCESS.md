@@ -1,3 +1,9 @@
+## Access-request form update — 27 September 2026
+
+The public Request Access form asks only for an email address. It prepares a message in the visitor’s email application; the visitor must press Send there. It does not automatically send email, create a Supabase identity, or grant access. The administrator reviews the request and arranges account setup through Supabase’s user-management/invitation workflow. The sign-in form still requires the approved account’s password and MFA. The administrator’s email is not displayed in the popup; the recipient is present in the composed email.
+
+This replaces the earlier password-based self-registration step described below. Existing accounts and approvals are unchanged.
+
 # Institutional access and administrator oversight
 
 ## Sign in as the initial administrator
