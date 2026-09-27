@@ -1,3 +1,7 @@
+# Latest update: institutional access and admin oversight
+
+See [INSTITUTIONAL-ACCESS.md](INSTITUTIONAL-ACCESS.md) for the current cloud authentication, domain/account approval, MFA, administrator monitoring and verification results. It supersedes earlier statements below that cloud MFA/admin oversight are absent. Local development mode is unchanged.
+
 # Re-Trace delivery status — landing and backend update
 
 Preview: https://retrace-cloud.vvreddy1584.chatgpt.site

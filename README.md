@@ -6,19 +6,25 @@ A runnable local and cloud SIH prototype with three separate modules, real sandb
 
 **Status: functional local and connected cloud sandbox prototype, not a complete implementation of every master-prompt requirement.** It is not a physical-drive eraser or a certified forensic tool. Original uploaded evidence is retained; erase operations affect disposable working copies only.
 
-## Connected cloud version (v0.2)
+## Institutional access update
+
+Cloud access now requires approved domain/account, verified email and authenticator MFA. Administrators have project-wide oversight and audit-backed access controls. Start with [institutional access and admin instructions](docs/INSTITUTIONAL-ACCESS.md).
+
+## Connected cloud version (v0.3)
 
 [Open the private website preview](https://retrace-cloud.vvreddy1584.chatgpt.site)
 
 The Supabase project `noqdtxwvgqkgrkpsbhpi` now has the cloud schema, RLS, private storage, and the deployed `retrace-api` function. See [cloud setup and use](docs/cloud-auth.md). The original Python/SQLite mode remains available.
 
-Cloud features: verified-email Auth with live session checks, isolated cases, real PNG/JPEG/PDF/ZIP carving, Storage working-copy overwrite/read-back/removal, automatic timelines, hash-chained audits, Ed25519-signed reports, and synthetic validation. The cloud limit is 8 MiB per operation batch. Physical-media cleansing, MFA/passkeys and fragmented reconstruction remain out of scope.
+Cloud features: verified-email Auth with live session checks, isolated cases, real PNG/JPEG/PDF/ZIP carving, Storage working-copy overwrite/read-back/removal, automatic timelines, hash-chained audits, Ed25519-signed reports, and synthetic validation. The cloud limit is 8 MiB per operation batch. Physical-media cleansing, passkeys and fragmented reconstruction remain out of scope.
 
 Latest delivery and exact demo steps: [DELIVERY-STATUS.md](docs/DELIVERY-STATUS.md).
 
 The public landing is at `/`; sign-in is at `/login`; existing workspaces are under `/app/*`. The fixture now contains **eight** actual artifacts (3 JPEG, 2 PNG, 2 PDF, 1 ZIP).
 
 ## Download or clone into VS Code
+
+Canonical repository: `tevi87637-ship-it/Re-Trace`. The latest institutional login, MFA, admin oversight and orange/charcoal UI are included. See [Vercel deployment](docs/VERCEL-DEPLOYMENT.md).
 
 - [Download ZIP](https://github.com/tevi87637-ship-it/Re-Trace/archive/refs/heads/main.zip), extract it, and open the extracted folder in VS Code.
 - Or install Git and run:

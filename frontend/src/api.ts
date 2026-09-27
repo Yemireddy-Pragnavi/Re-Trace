@@ -1,8 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
-export const hosted = import.meta.env.VITE_RUNTIME === 'cloud'
+// Production deployments use the connected cloud backend unless local mode is explicitly requested.
+export const hosted = (import.meta.env.VITE_RUNTIME || (import.meta.env.PROD ? 'cloud' : 'local')) === 'cloud'
 const base = import.meta.env.VITE_API_URL || ''
-const url=import.meta.env.VITE_SUPABASE_URL
-const key=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+// Public client configuration, never a service-role key. Environment values can override it.
+const url=import.meta.env.VITE_SUPABASE_URL || (hosted ? 'https://noqdtxwvgqkgrkpsbhpi.supabase.co' : '')
+const key=import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || (hosted ? 'sb_publishable_9sro6BlSGp9C4QIppNbzZQ_pXG0SzDw' : '')
 export const cloud=url&&key?createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}):null
 export const session = {
   token: () => sessionStorage.getItem('retrace-token') || '',
@@ -18,7 +20,7 @@ export async function api(path:string,method='GET',body?:unknown) {
   const response=await fetch(endpoint(path),{method,headers:{...await headers(),...(body instanceof FormData?{}:{'Content-Type':'application/json'})},body:body===undefined?undefined:body instanceof FormData?body:JSON.stringify(body)})
   if(!response.ok){
     const error=await response.json().catch(()=>({detail:response.statusText}))
-    if(response.status===401) {session.clear();window.dispatchEvent(new Event('session-expired'))}
+    if(response.status===401||(response.status===403&&typeof error.detail==='string'&&/Workspace access requires|Authenticator verification required/.test(error.detail))) {session.clear();window.dispatchEvent(new Event('session-expired'))}
     throw new Error(typeof error.detail==='string'?error.detail:JSON.stringify(error.detail))
   }
   return response.json()
