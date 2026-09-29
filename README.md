@@ -1,10 +1,18 @@
 # RE:TRACE
 
-### Integrated Secure Data Erasure + Advanced File Recovery
+## Integrated Secure Data Erasure + Advanced File Recovery
 
-**Smart India Hackathon 2026 · Problem Statement SIH26149 · Team Cryptic Crew**
+<p align="center">
+  <strong>Recover what matters. Erase what must never return. Verify both with trusted proof.</strong>
+</p>
 
-[![Live Prototype](https://img.shields.io/badge/Live%20Prototype-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://re-trace-phi.vercel.app/)
+<p align="center">
+  Smart India Hackathon 2026 · Problem Statement SIH26149 · Team Cryptic Crew
+</p>
+
+<p align="center">
+
+[![Live Prototype](https://img.shields.io/badge/Live%20Prototype-Open%20RE%3ATRACE-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://re-trace-phi.vercel.app/)
 ![React](https://img.shields.io/badge/Frontend-React-149ECA?style=for-the-badge&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Python](https://img.shields.io/badge/Backend-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -12,485 +20,713 @@
 ![Supabase](https://img.shields.io/badge/Cloud-Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![SQLite](https://img.shields.io/badge/Local%20DB-SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 ![SHA-256](https://img.shields.io/badge/Integrity-SHA--256-1D3557?style=for-the-badge)
-![SIH](https://img.shields.io/badge/Smart%20India%20Hackathon-2026-F97316?style=for-the-badge)
-![NIST Guidance](https://img.shields.io/badge/Guidance-NIST%20SP%20800--88%20Rev.2-2E7D32?style=for-the-badge)
+![NIST](https://img.shields.io/badge/Guidance-NIST%20SP%20800--88%20Rev.2-2E7D32?style=for-the-badge)
+![IEEE](https://img.shields.io/badge/Reference-IEEE%202883-F7B500?style=for-the-badge)
+
+</p>
 
 ---
 
-> **RE:TRACE combines secure data sanitization, forensic file recovery, independent validation, activity provenance, tamper-evident auditing, and forensic reporting in one case-based workflow.**
+> **RE:TRACE is a case-based secure media assurance platform that combines forensic file recovery, controlled data sanitization, independent post-erasure validation, activity provenance, tamper-evident auditing, and structured forensic reporting within one workflow.**
 
-Most tools solve only one side of the problem: they either **erase data** or **recover data**.
+Most existing tools focus primarily on one side of the lifecycle:
 
-RE:TRACE connects both sides and adds a third layer: **assurance**.
+```text
+Recover Data
+     OR
+Erase Data
+```
 
-The platform is designed to answer five important questions:
+RE:TRACE connects both sides and adds another important layer:
 
-- Can sensitive data be securely sanitized?
-- Can deleted evidence still be recovered?
-- Can the result of sanitization be independently challenged?
-- Can we track **who performed what action and when**?
-- Can the entire process be converted into a verifiable forensic record?
+```text
+RECOVER
+   +
+ERASE
+   +
+VERIFY
+   +
+TRACE
+   +
+REPORT
+```
 
-### RE:TRACE in One Line
+The goal is not simply to perform an operation.
 
-> **Recover what matters. Erase what must never return. Verify both with trusted proof.**
+The goal is to make that operation **traceable, verifiable, reviewable, and connected to an investigation case**.
 
 ---
 
-# 🚀 Live Prototype
+# Live Prototype
 
 ### [Open RE:TRACE](https://re-trace-phi.vercel.app/)
 
-The deployed prototype demonstrates the complete user workflow through a controlled cloud environment.
+The hosted prototype demonstrates the RE:TRACE investigation workflow in a controlled environment.
 
-> **Safety Note:** The hosted version performs destructive operations only on controlled uploads, generated test media, and disposable working copies. It does not directly erase a visitor's physical HDD, SSD, or NVMe device.
-
----
-
-# 🎯 Why RE:TRACE?
-
-Digital-forensics and sanitization workflows are commonly separated across multiple utilities.
-
-A recovery tool may recover evidence but does not necessarily provide secure sanitization.
-
-A sanitization tool may erase data but does not normally attempt forensic recovery afterward to challenge the result.
-
-An investigator may also need separate tools for:
-
-- User authentication
-- Case tracking
-- Evidence registration
-- Forensic recovery
-- Secure sanitization
-- Sanitization verification
-- Activity logging
-- Timeline preparation
-- Audit integrity
-- Forensic reporting
-
-RE:TRACE brings these capabilities into **one accountable workflow**.
+> **Safety Boundary:** The deployed web prototype does not issue destructive ATA, NVMe, or physical-drive commands against a visitor's hardware. Sanitization is demonstrated using uploaded data, generated forensic media, and disposable working copies.
 
 ---
 
-# 🏗️ System Architecture
+# Problem Statement
+
+Digital investigations often require two apparently opposite capabilities:
+
+- recovering deleted information when evidence must be preserved;
+- securely sanitizing sensitive information when it must not remain recoverable.
+
+These workflows are commonly handled using different utilities.
+
+That separation creates additional challenges around:
+
+- evidence context;
+- operation tracking;
+- validation;
+- accountability;
+- post-erasure assurance;
+- integrity checking;
+- timeline reconstruction;
+- forensic reporting.
+
+RE:TRACE approaches the problem as a single **Secure Media Assurance Lifecycle**.
 
 ```text
-                    RE:TRACE SECURE MEDIA ASSURANCE PLATFORM
-
-┌─────────────────────────────────────────────────────────────────────┐
-│                    1. IDENTITY & ACCESS CONTROL                     │
-│                                                                     │
-│     Authentication → Session Management → Role-Based Access         │
-│                  Admin / Investigator / Viewer                      │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                        2. CASE MANAGEMENT                           │
-│                                                                     │
-│     Create Case → Assign Investigator → Register Evidence Source    │
-│                  → Store Case Metadata                              │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    3. SOURCE / EVIDENCE INSPECTION                  │
-│                                                                     │
-│     Disk Image / Files / Folders                                    │
-│            ↓                                                        │
-│     Media Profile + Filesystem Information + SHA-256                │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-                                 ▼
-                        ┌───────────────────┐
-                        │ CHOOSE OPERATION  │
-                        └─────────┬─────────┘
-                                 │
-             ┌───────────────────┼───────────────────┐
-             │                   │                   │
-             ▼                   ▼                   ▼
-
-┌───────────────────┐  ┌────────────────────┐  ┌─────────────────────┐
-│ SECURE DRIVE      │  │ FILE / FOLDER      │  │ ADVANCED FILE       │
-│ ERASURE           │  │ ERASURE            │  │ RECOVERY            │
-│                   │  │                    │  │                     │
-│ Media profile     │  │ Select targets     │  │ Read-only source    │
-│ Policy decision   │  │ Batch processing   │  │ Raw byte scanning   │
-│ Working copy      │  │ Overwrite copy     │  │ Signature carving   │
-│ Sanitization      │  │ Rename / unlink    │  │ Structure checks    │
-│ Read-back verify  │  │ Metadata handling  │  │ Classification      │
-│ Before/after hash │  │ Verify deletion    │  │ Confidence score    │
-│                   │  │                    │  │ SHA-256             │
-└─────────┬─────────┘  └─────────┬──────────┘  └──────────┬──────────┘
-          │                      │                        │
-          └──────────────────────┼────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                  4. INDEPENDENT SANITIZATION VALIDATION             │
-│                                                                     │
-│ Sanitized Copy → Recovery Challenge → Artifact Scan                 │
-│                                                                     │
-│                PASS / WARNING / INCONCLUSIVE                        │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                     5. ACTIVITY PROVENANCE                          │
-│                                                                     │
-│ User + Case + Source + Operation + Timestamp + Result               │
-│                                                                     │
-│                       AUTOMATIC TIMELINE                            │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                     6. TAMPER-EVIDENT AUDIT                         │
-│                                                                     │
-│           Event 1 → Event 2 → Event 3 → Event N                     │
-│                    SHA-256 Hash Chain                               │
-└────────────────────────────────┬────────────────────────────────────┘
-                                 │
-                                 ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                       7. REPORT GENERATION                          │
-│                                                                     │
-│        Recovery Report | Sanitization Certificate                   │
-│              Timeline | Hashes | Audit Status                       │
-│                        PDF + JSON                                   │
-└─────────────────────────────────────────────────────────────────────┘
+Evidence Source
+      │
+      ▼
+Register & Fingerprint
+      │
+      ▼
+Choose Operation
+      │
+      ├───────────────┐
+      ▼               ▼
+   Recover         Sanitize
+      │               │
+      ▼               ▼
+   Validate        Verify
+      │               │
+      └───────┬───────┘
+              ▼
+        Recovery Challenge
+              │
+              ▼
+       Activity Provenance
+              │
+              ▼
+       Tamper-Evident Audit
+              │
+              ▼
+       Forensic Reporting
 ```
 
 ---
 
-# 🔍 Architecture Explained
+# Why RE:TRACE?
 
-RE:TRACE is divided into seven main layers.
+RE:TRACE is designed around five questions:
 
-## 1. Identity and Access Control
+1. **Can deleted evidence still be recovered?**
+2. **Can sensitive data be sanitized in a controlled workflow?**
+3. **Can the sanitization result be independently challenged?**
+4. **Can we determine who performed each important action and when?**
+5. **Can the complete operation become a verifiable forensic record?**
 
-Before performing forensic or sanitization operations, a user must authenticate.
+The platform combines these concerns instead of treating them as independent utilities.
 
-The system maintains:
+---
 
-- Authenticated user identity
-- User role
-- Active session
-- Access permissions
-- Login/logout activity
+# System Architecture
 
-### Supported Roles
+RE:TRACE follows a layered architecture separating the user interface, application services, forensic processing engines, assurance logic, persistence, and reporting components.
 
-| Role | Access |
+```mermaid
+flowchart TB
+
+    subgraph L1["Layer 1 — Investigator Interface"]
+        LANDING["Public Landing Page"]
+        AUTH_UI["Authentication"]
+        DASH["Investigator Dashboard"]
+        CASE_UI["Case Workspace"]
+        REC_UI["Recovery Workspace"]
+        ERASE_UI["Sanitization Workspace"]
+        VERIFY_UI["Validation Workspace"]
+        REPORT_UI["Reports & Timeline"]
+    end
+
+    subgraph L2["Layer 2 — Application & API Services"]
+        API["FastAPI Application"]
+        AUTH["Authentication & Session Control"]
+        CASES["Case Management"]
+        SOURCE["Evidence Source Registration"]
+        JOBS["Operation / Job Controller"]
+        ACCESS["Role-Based Access Control"]
+    end
+
+    subgraph L3["Layer 3 — Forensic Processing Engines"]
+        HASH["SHA-256 Fingerprinting"]
+        CARVER["Raw File Carving Engine"]
+        STRUCTURE["Structure Validation"]
+        CLASSIFY["Artifact Classification"]
+        CONFIDENCE["Recovery Confidence"]
+        FILE_ERASE["File / Folder Erasure"]
+        MEDIA_ERASE["Controlled Media Sanitization"]
+    end
+
+    subgraph L4["Layer 4 — Assurance & Validation"]
+        READBACK["Read-Back Verification"]
+        CHALLENGE["Post-Sanitization Recovery Challenge"]
+        VALIDATION["PASS / WARNING / INCONCLUSIVE"]
+        PROVENANCE["Activity Provenance"]
+        TIMELINE["Automatic Case Timeline"]
+        AUDIT["SHA-256 Tamper-Evident Audit Chain"]
+    end
+
+    subgraph L5["Layer 5 — Persistence & Storage"]
+        SQLITE["SQLite Local Metadata"]
+        POSTGRES["Supabase PostgreSQL"]
+        STORAGE["Supabase Private Storage"]
+        LOCAL["Controlled Local Evidence Storage"]
+    end
+
+    subgraph L6["Layer 6 — Reporting"]
+        REC_REPORT["Recovery Report"]
+        SAN_CERT["Sanitization Certificate"]
+        JSON["JSON Evidence Record"]
+        PDF["PDF Forensic Report"]
+    end
+
+    LANDING --> AUTH_UI
+    AUTH_UI --> DASH
+    DASH --> CASE_UI
+    CASE_UI --> REC_UI
+    CASE_UI --> ERASE_UI
+    CASE_UI --> VERIFY_UI
+    CASE_UI --> REPORT_UI
+
+    AUTH_UI --> AUTH
+    CASE_UI --> CASES
+    REC_UI --> API
+    ERASE_UI --> API
+    VERIFY_UI --> API
+    REPORT_UI --> API
+
+    API --> AUTH
+    API --> CASES
+    API --> SOURCE
+    API --> JOBS
+    AUTH --> ACCESS
+
+    SOURCE --> HASH
+
+    JOBS --> CARVER
+    JOBS --> FILE_ERASE
+    JOBS --> MEDIA_ERASE
+
+    CARVER --> STRUCTURE
+    STRUCTURE --> CLASSIFY
+    CLASSIFY --> CONFIDENCE
+    CONFIDENCE --> HASH
+
+    FILE_ERASE --> READBACK
+    MEDIA_ERASE --> READBACK
+
+    READBACK --> CHALLENGE
+    CHALLENGE --> VALIDATION
+
+    CARVER --> PROVENANCE
+    FILE_ERASE --> PROVENANCE
+    MEDIA_ERASE --> PROVENANCE
+    VALIDATION --> PROVENANCE
+
+    PROVENANCE --> TIMELINE
+    PROVENANCE --> AUDIT
+
+    CASES --> SQLITE
+    SOURCE --> SQLITE
+    PROVENANCE --> SQLITE
+
+    CASES --> POSTGRES
+    AUTH --> POSTGRES
+    SOURCE --> STORAGE
+    CARVER --> LOCAL
+
+    CONFIDENCE --> REC_REPORT
+    VALIDATION --> SAN_CERT
+    TIMELINE --> REC_REPORT
+    AUDIT --> REC_REPORT
+
+    REC_REPORT --> PDF
+    REC_REPORT --> JSON
+    SAN_CERT --> PDF
+    SAN_CERT --> JSON
+```
+
+---
+
+# Architecture Layers
+
+## Layer 1 — Investigator Interface
+
+The frontend provides a unified investigation workspace for:
+
+- authentication;
+- dashboard navigation;
+- case creation;
+- evidence registration;
+- recovery;
+- sanitization;
+- validation;
+- case timeline inspection;
+- audit verification;
+- report generation.
+
+The interface is built using:
+
+- React;
+- TypeScript;
+- Vite.
+
+---
+
+## Layer 2 — Application & API Services
+
+The API layer coordinates actions between the interface and processing engines.
+
+It is responsible for:
+
+```text
+Authentication
+     +
+Session Management
+     +
+Case Management
+     +
+Evidence Registration
+     +
+Operation Control
+     +
+Access Authorization
+```
+
+The local API is implemented using **FastAPI**.
+
+---
+
+## Layer 3 — Forensic Processing Engines
+
+The forensic processing layer performs the main technical operations.
+
+It contains:
+
+- source hashing;
+- raw byte scanning;
+- signature detection;
+- candidate extraction;
+- file structure validation;
+- artifact classification;
+- recovery confidence analysis;
+- controlled sanitization;
+- file/folder erasure;
+- verification support.
+
+---
+
+## Layer 4 — Assurance & Validation
+
+This layer differentiates RE:TRACE from a simple erase or recovery utility.
+
+After an operation, the platform records and checks what happened.
+
+The assurance layer includes:
+
+- read-back verification;
+- recovery challenge after sanitization;
+- validation outcomes;
+- activity provenance;
+- timeline construction;
+- tamper-evident audit chaining.
+
+---
+
+## Layer 5 — Persistence & Storage
+
+RE:TRACE supports a hybrid prototype storage architecture.
+
+| Component | Purpose |
 |---|---|
-| **Admin** | Administrative and case-wide access |
-| **Investigator** | Creates cases and performs forensic operations |
-| **Viewer** | Read-only access to assigned information |
-
-Authentication activity also becomes part of the audit trail.
-
----
-
-## 2. Case Management
-
-Every investigation or sanitization task is connected to a **case**.
-
-A case contains information such as:
-
-- Case ID
-- Title
-- Description
-- Department
-- Investigator
-- Priority
-- Status
-- Evidence sources
-- Jobs
-- Timeline
-- Reports
-
-This prevents evidence and operations from existing without investigation context.
+| SQLite | Local application and forensic metadata |
+| Supabase PostgreSQL | Cloud metadata persistence |
+| Supabase Storage | Private controlled object storage |
+| Local Filesystem | Recovery outputs and controlled forensic data |
 
 ---
 
-## 3. Evidence Source Registration and Inspection
+## Layer 6 — Reporting
 
-The investigator registers the source before an operation begins.
+Investigation results are converted into structured outputs.
 
-### Supported Prototype Inputs
+Current output types include:
 
-- Raw disk images
-- Uploaded files
-- Folders / batch files
-- Generated forensic test media
-
-For every source, RE:TRACE stores or calculates:
-
-- Source name
-- Source type
-- Media profile
-- Size
-- Filesystem information where available
-- SHA-256 fingerprint
-- Associated case
-
-The original forensic source is preserved during recovery operations.
+- forensic recovery reports;
+- sanitization certificates;
+- activity timeline;
+- evidence hashes;
+- audit integrity information;
+- PDF exports;
+- JSON exports.
 
 ---
 
-# 🧹 Core Module 1 — Secure Drive Erasure
+# Core Processing Pipelines
 
-RE:TRACE provides a controlled sanitization workflow for forensic test images and disposable working copies.
+## 1. Evidence Intake & Registration Pipeline
 
-The workflow considers:
+Every forensic operation starts with identifying the source and associating it with a case.
 
-- Media profile
-- Sanitization purpose
-- Data sensitivity
-- Requested scope
+```mermaid
+flowchart LR
 
-It then determines a suitable sanitization direction.
+    CASE["Investigation Case"]
+        --> SOURCE["Register Evidence Source"]
 
-### Example Workflow
+    SOURCE
+        --> META["Collect Source Metadata"]
 
-```text
-Media Profile: HDD
-        +
-Purpose: External Transfer
-        +
-Sensitivity: Sensitive
-        ↓
-Smart Policy Decision
-        ↓
-Controlled Sanitization
-        ↓
-Read-Back Verification
-        ↓
-Post-Sanitization Recovery Challenge
-        ↓
-Sanitization Certificate
+    META
+        --> TYPE["Identify Source Type"]
+
+    TYPE
+        --> HASH["Generate SHA-256"]
+
+    HASH
+        --> RECORD["Create Evidence Record"]
+
+    RECORD
+        --> READY["Ready for Forensic Operation"]
 ```
 
-The system records:
-
-- Sanitization method
-- Bytes processed
-- Duration
-- Before/after hashes
-- Verification result
-- Validation result
-
----
-
-# 📁 Core Module 2 — Secure File & Folder Erasure
-
-Investigators can select:
-
-- A single file
-- Multiple files
-- Folders
-- Batch targets
-
-The controlled workflow performs supported operations such as:
+Typical source metadata can include:
 
 ```text
-Select Targets
-      ↓
-Calculate Metadata / Hash
-      ↓
-Create Safe Working Copy
-      ↓
-Overwrite
-      ↓
-Rename
-      ↓
-Unlink
-      ↓
-Supported Metadata Cleanup
-      ↓
-Verify Absence
-      ↓
-Record Result
+Source Name
+Source Type
+Media Profile
+File / Image Size
+Filesystem Information
+SHA-256
+Case Association
 ```
-
-## File & Folder Erasure — Input
-
-![File and Folder Eraser Input](screenshots/01-file-folder-eraser-input.png)
-
-## File & Folder Erasure — Output
-
-![File and Folder Eraser Output](screenshots/02-file-folder-eraser-output.png)
 
 ---
 
-# 🔬 Core Module 3 — Advanced File Carving & Recovery
+# 2. File Carving & Recovery Pipeline
 
-RE:TRACE performs recovery from raw forensic/test images without depending only on normal filesystem metadata.
+RE:TRACE performs signature-based carving against raw forensic/test images.
 
-### Current MVP Recovery Formats
+```mermaid
+flowchart LR
 
-| Category | Supported Type |
+    SRC["Read-Only Forensic Source"]
+        --> RAW["Raw Byte Scan"]
+
+    RAW
+        --> SIGNATURE["Signature Detection"]
+
+    SIGNATURE
+        --> CANDIDATE["Candidate Extraction"]
+
+    CANDIDATE
+        --> STRUCTURE["Structure Validation"]
+
+    STRUCTURE
+        --> CLASSIFY["Artifact Classification"]
+
+    CLASSIFY
+        --> SCORE["Confidence Assessment"]
+
+    SCORE
+        --> HASH["SHA-256"]
+
+    HASH
+        --> EVIDENCE["Recovered Evidence"]
+
+    EVIDENCE
+        --> RECORD["Case Evidence Record"]
+```
+
+The current prototype focuses on:
+
+| Category | Supported Format |
 |---|---|
 | Image | JPEG |
 | Image | PNG |
 | Document | PDF |
 | Archive | ZIP |
 
-### Recovery Pipeline
+---
 
-```text
-Read-Only Source
-       ↓
-Raw Byte Scan
-       ↓
-Signature Detection
-       ↓
-Candidate Extraction
-       ↓
-Structure Validation
-       ↓
-Automatic Classification
-       ↓
-Confidence Scoring
-       ↓
-SHA-256
-       ↓
-Recovered Evidence
+# 3. Explainable Recovery Confidence Pipeline
+
+Finding a file header alone does not guarantee that the recovered object is valid.
+
+RE:TRACE therefore performs additional checks.
+
+```mermaid
+flowchart TD
+
+    FOUND["Candidate Artifact Found"]
+        --> HEADER["Validate Expected Header"]
+
+    HEADER
+        --> FOOTER["Check Footer Where Applicable"]
+
+    FOOTER
+        --> BOUNDS["Evaluate File Boundaries"]
+
+    BOUNDS
+        --> STRUCTURE["Format-Specific Structure Checks"]
+
+    STRUCTURE
+        --> PARSER["Parser / Readability Test"]
+
+    PARSER
+        --> SCORE["Generate Confidence Result"]
+
+    SCORE
+        --> REVIEW["Investigator Review"]
 ```
 
-## Recovery Input
+Checks can include:
 
-![File Carving Recovery Input](screenshots/03-file-carving-recovery-input.png)
+- expected headers;
+- expected footers where applicable;
+- structural validity;
+- file boundary plausibility;
+- parser/readability checks;
+- format consistency.
 
-## Recovered Evidence
-
-![File Carving Recovery Output](screenshots/04-file-carving-recovery-output.png)
+This provides additional context to the investigator instead of presenting every carved object as equally reliable.
 
 ---
 
-# 🧠 Explainable Recovery Confidence
+# 4. Smart Sanitization Policy Pipeline
 
-A recovered file is not automatically treated as valid simply because its header was found.
+Storage technologies cannot always be treated identically.
 
-RE:TRACE checks characteristics such as:
+RE:TRACE therefore separates policy selection from the destructive operation.
 
-- Expected file header
-- Expected footer where applicable
-- Structural validity
-- Parser/readability result
-- Plausible file boundaries
-- Format-specific consistency checks
+```mermaid
+flowchart TD
 
-The resulting confidence assessment gives investigators additional context when reviewing recovered artifacts.
+    MEDIA["Media Profile"]
+        --> POLICY["Sanitization Policy Engine"]
 
----
+    SCOPE["Requested Scope"]
+        --> POLICY
 
-# 💡 Key Innovation 1 — Smart Sanitization Policy
+    PURPOSE["Operational Purpose"]
+        --> POLICY
 
-Different storage media cannot always be treated using exactly the same sanitization approach.
+    SENSITIVITY["Data Sensitivity"]
+        --> POLICY
 
-RE:TRACE therefore considers:
+    POLICY
+        --> DECISION["Recommended Sanitization Direction"]
 
-```text
-MEDIA TYPE
-     +
-OPERATION SCOPE
-     +
-PURPOSE
-     +
-DATA SENSITIVITY
-     ↓
-SANITIZATION POLICY
-     ↓
-RECOMMENDED APPROACH
+    DECISION
+        --> CONTROLLED["Controlled Sanitization"]
+
+    CONTROLLED
+        --> VERIFY["Verification"]
+
+    VERIFY
+        --> CHALLENGE["Recovery Challenge"]
+
+    CHALLENGE
+        --> CERT["Sanitization Record / Certificate"]
 ```
 
-### Media-Aware Sanitization Direction
+### Media-Aware Direction
 
-| Media | Recommended Direction |
+| Media Type | RE:TRACE Direction |
 |---|---|
-| HDD | Overwrite-based workflow |
+| HDD | Overwrite-oriented sanitization workflow |
 | SSD | Secure erase / cryptographic erase where supported |
 | NVMe | NVMe sanitize / secure format where supported |
-| USB Flash | Logical sanitization with flash-storage limitation warning |
+| USB Flash | Logical sanitization with flash-storage limitations |
 | File / Folder | Controlled selective erasure |
 
-For the hosted prototype, these decisions are safely demonstrated using controlled working copies rather than direct hardware commands.
+> In the hosted prototype, these choices are demonstrated safely using working copies rather than issuing direct commands to physical storage devices.
 
 ---
 
-# 🛡️ Key Innovation 2 — Independent Sanitization Validation
+# 5. Secure File & Folder Erasure Pipeline
 
-A traditional erase workflow may stop after the erase command reports success.
+RE:TRACE supports controlled erasure for:
 
-RE:TRACE adds another assurance layer.
+- individual files;
+- multiple files;
+- folders;
+- batch targets.
 
-```text
-SANITIZE
-    ↓
-READ-BACK VERIFY
-    ↓
-RUN RECOVERY ENGINE
-    ↓
-SCAN FOR SUPPORTED ARTIFACTS
-    ↓
-RESULT
+```mermaid
+flowchart TD
+
+    SELECT["Select File / Folder Targets"]
+        --> META["Collect Metadata & Hash"]
+
+    META
+        --> COPY["Create Controlled Working Copy"]
+
+    COPY
+        --> OVERWRITE["Overwrite Supported Content"]
+
+    OVERWRITE
+        --> RENAME["Rename Where Applicable"]
+
+    RENAME
+        --> UNLINK["Unlink"]
+
+    UNLINK
+        --> CLEAN["Supported Metadata Cleanup"]
+
+    CLEAN
+        --> VERIFY["Verify Absence"]
+
+    VERIFY
+        --> LOG["Record Operation Result"]
+```
+
+---
+
+# 6. Independent Sanitization Validation
+
+A successful erase command should not automatically be interpreted as proof that nothing remains recoverable.
+
+RE:TRACE introduces an independent post-sanitization challenge.
+
+```mermaid
+flowchart TD
+
+    BEFORE["Original Working Copy"]
+        --> SANITIZE["Sanitize"]
+
+    SANITIZE
+        --> READBACK["Read-Back Verification"]
+
+    READBACK
+        --> RECOVERY["Run Recovery Engine Again"]
+
+    RECOVERY
+        --> SCAN["Search for Supported Recoverable Artifacts"]
+
+    SCAN
+        --> DECISION{"Artifacts Detected?"}
+
+    DECISION -- "No" --> PASS["PASS"]
+
+    DECISION -- "Yes" --> WARNING["WARNING"]
+
+    DECISION -- "Unable to Determine" --> INCONCLUSIVE["INCONCLUSIVE"]
+
+    PASS --> RECORD["Validation Record"]
+    WARNING --> RECORD
+    INCONCLUSIVE --> RECORD
 ```
 
 ### Validation Results
 
 | Result | Meaning |
 |---|---|
-| **PASS** | No supported recoverable artifacts detected |
+| **PASS** | No supported recoverable artifacts were detected |
 | **WARNING** | One or more supported artifacts remain recoverable |
-| **INCONCLUSIVE** | The result could not be determined reliably |
+| **INCONCLUSIVE** | The validation engine could not determine the result reliably |
 
-RE:TRACE intentionally avoids claiming that a successful logical scan proves absolute physical irrecoverability.
+> A PASS means the supported validation checks found no recoverable supported artifacts. It is not presented as proof of absolute physical irrecoverability.
 
 ---
 
-# 👤 Key Innovation 3 — Activity Provenance
+# 7. Activity Provenance Pipeline
 
-RE:TRACE tracks important actions performed throughout an investigation.
+Important actions are recorded with investigation context.
 
-Examples include:
+```mermaid
+flowchart LR
 
-- User login
-- Case creation
-- Evidence registration
-- Source hashing
-- Sanitization start
-- Sanitization completion
-- Recovery start
-- Recovered artifact creation
-- Validation
-- Report generation
-- Evidence export
+    USER["User"]
+        --> EVENT["Forensic Event"]
 
-Each recorded event can contain:
+    ROLE["Role"]
+        --> EVENT
 
-```text
-User
-Role
-Session
-Case
-Source
-Job
-Operation
-Timestamp
-Parameters
-Result
+    SESSION["Session"]
+        --> EVENT
+
+    CASE["Case"]
+        --> EVENT
+
+    SOURCE["Evidence Source"]
+        --> EVENT
+
+    JOB["Operation / Job"]
+        --> EVENT
+
+    EVENT
+        --> TIME["Timestamp"]
+
+    EVENT
+        --> PARAMS["Parameters"]
+
+    EVENT
+        --> RESULT["Result"]
+
+    TIME --> RECORD["Activity Record"]
+    PARAMS --> RECORD
+    RESULT --> RECORD
 ```
 
-This creates accountability throughout the workflow.
+Examples of recorded actions include:
+
+- authentication;
+- case creation;
+- source registration;
+- evidence hashing;
+- recovery started;
+- recovery completed;
+- artifact recovered;
+- sanitization started;
+- sanitization completed;
+- verification performed;
+- validation performed;
+- report generated;
+- evidence exported.
 
 ---
 
-# ⏱️ Key Innovation 4 — Automatic Timeline Construction
+# 8. Automatic Timeline Construction
 
-Recorded activity is automatically arranged into a chronological case timeline.
+Activity provenance is used to build the case timeline automatically.
 
-### Example
+```mermaid
+flowchart TD
+
+    EVENTS["Recorded Case Events"]
+        --> SORT["Sort by Timestamp"]
+
+    SORT
+        --> LINK["Link User + Case + Source + Job"]
+
+    LINK
+        --> TIMELINE["Chronological Investigation Timeline"]
+
+    TIMELINE
+        --> REVIEW["Investigator / Reviewer View"]
+
+    TIMELINE
+        --> REPORT["Forensic Report"]
+```
+
+Example timeline:
 
 ```text
 09:31:08  Investigator authenticated
@@ -503,76 +739,298 @@ Recorded activity is automatically arranged into a chronological case timeline.
 09:39:02  Forensic report generated
 ```
 
-This allows investigators and reviewers to understand the sequence of an investigation without manually reconstructing events from separate logs.
+This removes the need to reconstruct the investigation sequence manually from unrelated logs.
 
 ---
 
-# 🔗 Key Innovation 5 — Tamper-Evident Audit Chain
+# 9. Tamper-Evident Audit Architecture
 
-Audit events are linked using SHA-256.
+Ordinary logs can be modified without necessarily exposing the change.
 
-```text
-EVENT 01
-   │
-   │ Hash A
-   ▼
-EVENT 02
-Previous Hash = A
-   │
-   │ Hash B
-   ▼
-EVENT 03
-Previous Hash = B
+RE:TRACE links audit events through SHA-256 hashes.
+
+```mermaid
+flowchart LR
+
+    E1["Event 01"]
+        --> H1["Hash A"]
+
+    H1
+        --> E2["Event 02<br/>Previous Hash = A"]
+
+    E2
+        --> H2["Hash B"]
+
+    H2
+        --> E3["Event 03<br/>Previous Hash = B"]
+
+    E3
+        --> H3["Hash C"]
+
+    H3
+        --> EN["Event N"]
 ```
 
-If an earlier copied event is modified during validation:
+During integrity validation:
 
 ```text
-Original Hash ≠ Recalculated Hash
-               ↓
-       TAMPERING DETECTED
+Stored Event
+     │
+     ▼
+Recalculate Hash
+     │
+     ▼
+Compare Against Stored Hash
+     │
+     ├── Match ───────► Integrity Preserved
+     │
+     └── Mismatch ────► Tampering / Modification Detected
 ```
 
-The system therefore provides **tamper evidence**, rather than simply maintaining ordinary application logs.
+This provides **tamper evidence** for recorded application activity.
+
+It does not claim absolute immutability against a fully privileged administrator controlling the underlying host or database.
 
 ---
 
-# 📄 Forensic Reporting
+# 10. Forensic Reporting Pipeline
 
-RE:TRACE generates structured recovery and sanitization reports.
+All important outputs converge into a structured report.
 
-Reports can include:
+```mermaid
+flowchart TD
+
+    CASE["Case Information"]
+        --> REPORT["Reporting Engine"]
+
+    SOURCE["Evidence Source"]
+        --> REPORT
+
+    HASHES["SHA-256 Values"]
+        --> REPORT
+
+    RECOVERY["Recovered Evidence"]
+        --> REPORT
+
+    CONFIDENCE["Confidence Results"]
+        --> REPORT
+
+    SANITIZE["Sanitization Result"]
+        --> REPORT
+
+    VALIDATION["Validation Result"]
+        --> REPORT
+
+    TIMELINE["Activity Timeline"]
+        --> REPORT
+
+    AUDIT["Audit Integrity"]
+        --> REPORT
+
+    REPORT
+        --> PDF["PDF Report"]
+
+    REPORT
+        --> JSON["JSON Evidence Record"]
+```
+
+Reports can contain:
 
 - Case ID
 - Investigator
 - Evidence source
-- SHA-256 values
+- Source fingerprint
 - Operation details
 - Recovered evidence
-- Confidence results
-- Sanitization result
-- Validation result
-- Activity timeline
-- Audit integrity result
-
-### Supported Formats
-
-- **PDF**
-- **JSON**
-
-## Generated Forensic Report
-
-![Generated Forensic Report](screenshots/05-forensic-report-generated.png)
+- Confidence information
+- Sanitization method
+- Verification outcome
+- Recovery challenge result
+- Timeline
+- Audit-chain status
 
 ---
 
-# 🖥️ Platform Screens
+# Key Features
+
+## 1. Case-Based Investigation Workspace
+
+Every important operation belongs to a case.
+
+A case can contain:
+
+```text
+Case ID
+Title
+Description
+Department
+Investigator
+Priority
+Status
+Evidence Sources
+Operations
+Timeline
+Reports
+```
+
+This prevents evidence, recovery runs, or sanitization events from existing without context.
+
+---
+
+## 2. Raw File Carving
+
+The recovery engine does not depend exclusively on normal filesystem metadata.
+
+Instead, it can inspect raw bytes and identify supported artifacts from known structures and signatures.
+
+Current MVP support:
+
+- JPEG;
+- PNG;
+- PDF;
+- ZIP.
+
+---
+
+## 3. Evidence Integrity
+
+Evidence sources and important outputs can be fingerprinted using **SHA-256**.
+
+Example:
+
+```text
+Evidence Source
+      ↓
+SHA-256
+      ↓
+Case Evidence Record
+      ↓
+Operation
+      ↓
+Output Hash
+```
+
+Hashes provide a reproducible integrity reference for later comparison.
+
+---
+
+## 4. Explainable Recovery Confidence
+
+Recovered objects are evaluated using several structural checks rather than blindly accepted after a signature match.
+
+This helps distinguish:
+
+```text
+Signature Found
+```
+
+from:
+
+```text
+Signature Found
+      +
+Structure Valid
+      +
+Boundaries Plausible
+      +
+Parser Check
+      ↓
+Higher Confidence
+```
+
+---
+
+## 5. Media-Aware Sanitization
+
+RE:TRACE separates sanitization decisions by:
+
+- media profile;
+- scope;
+- operational purpose;
+- sensitivity.
+
+This avoids presenting one overwrite method as universally appropriate for every type of modern storage media.
+
+---
+
+## 6. Independent Recovery Challenge
+
+After sanitization, RE:TRACE can reuse the recovery engine against the sanitized working copy.
+
+That creates a closed assurance loop:
+
+```text
+SANITIZE
+   ↓
+VERIFY
+   ↓
+ATTEMPT RECOVERY
+   ↓
+ASSESS RESULT
+```
+
+---
+
+## 7. Activity Provenance
+
+Every significant operation can be linked to:
+
+```text
+WHO
++
+WHAT
++
+WHEN
++
+CASE
++
+SOURCE
++
+RESULT
+```
+
+This makes investigation activity easier to review.
+
+---
+
+## 8. Automatic Case Timeline
+
+Case events become a chronological timeline automatically.
+
+Investigators do not have to manually combine authentication logs, recovery activity, sanitization events, and report-generation events.
+
+---
+
+## 9. Tamper-Evident Audit Trail
+
+Events are chained using SHA-256 so unexpected modification of historical records can be detected during verification.
+
+---
+
+## 10. Structured Forensic Reporting
+
+RE:TRACE can convert investigation data into portable reports.
+
+Supported prototype formats:
+
+- PDF
+- JSON
+
+---
+
+# Platform Screens
 
 ## Landing Page
 
 ![RE:TRACE Landing Page](screenshots/01-landing-page.png)
 
-The landing page introduces the problem, platform capabilities, and key assurance features before authentication.
+The public landing page introduces:
+
+- the problem;
+- RE:TRACE's approach;
+- platform capabilities;
+- assurance features;
+- authentication entry points.
 
 ---
 
@@ -580,415 +1038,137 @@ The landing page introduces the problem, platform capabilities, and key assuranc
 
 ![RE:TRACE Dashboard Overview](screenshots/02-dashboard-overview.png)
 
-The dashboard gives investigators one place to access:
+The investigator dashboard provides centralized access to:
 
 - Cases
 - Recovery
 - Sanitization
 - Validation
-- Activity timeline
-- Audit records
-- Forensic reports
+- Timeline
+- Audit Records
+- Reports
 
 ---
 
-# 🔄 Data Flow
+## Secure File & Folder Erasure
 
-```text
-INPUT
-│
-├── Authenticated User
-├── Case Details
-├── Disk Image
-├── Files / Folders
-└── Selected Operation
+### Input
 
-        ↓
+![File and Folder Eraser Input](screenshots/01-file-folder-eraser-input.png)
 
-PROCESS
-│
-├── Session + Case Mapping
-├── Source Inspection
-├── SHA-256 Fingerprinting
-├── Sanitization / Recovery
-├── Validation
-├── Activity Tracking
-├── Automatic Timeline
-├── Audit Hash Chaining
-└── Report Generation
+### Result
 
-        ↓
-
-OUTPUT
-│
-├── Recovered Evidence
-├── Sanitization Result
-├── Sanitization Certificate
-├── Forensic Recovery Report
-├── Activity Timeline
-└── Verified Audit Record
-```
+![File and Folder Eraser Output](screenshots/02-file-folder-eraser-output.png)
 
 ---
 
-# 🛠️ Technology Stack
+## File Carving & Recovery
 
-## Frontend
+### Input
 
-| Technology | Purpose |
-|---|---|
-| **React** | User interface |
-| **TypeScript** | Type-safe frontend development |
-| **Vite** | Development and production build tooling |
+![File Carving Recovery Input](screenshots/03-file-carving-recovery-input.png)
 
----
+### Recovered Evidence
 
-## Backend
-
-| Technology | Purpose |
-|---|---|
-| **Python** | Core local processing |
-| **FastAPI** | Local REST API |
-| **Python Processing Engines** | Sanitization, recovery, verification, and fixture logic |
+![File Carving Recovery Output](screenshots/04-file-carving-recovery-output.png)
 
 ---
 
-## Database & Storage
+## Forensic Report
 
-| Technology | Purpose |
-|---|---|
-| **SQLite** | Local metadata database |
-| **Supabase PostgreSQL** | Cloud metadata persistence |
-| **Supabase Storage** | Private cloud evidence/file storage |
-| **Local Filesystem** | Controlled local evidence storage |
+![Generated Forensic Report](screenshots/05-forensic-report-generated.png)
 
 ---
 
-## Cloud Services
+# End-to-End Data Flow
 
-| Technology | Purpose |
-|---|---|
-| **Supabase Auth** | Cloud authentication |
-| **Supabase RLS** | Database access isolation |
-| **Supabase Edge Functions** | Cloud backend operations |
-| **Vercel** | Web frontend deployment |
+```mermaid
+flowchart TD
 
----
+    USER["Authenticated Investigator"]
+        --> CASE["Investigation Case"]
 
-## Security & Integrity
+    CASE
+        --> EVIDENCE["Register Evidence"]
 
-| Technology | Purpose |
-|---|---|
-| **SHA-256** | Evidence and audit hashing |
-| **Hash Chaining** | Tamper-evident event records |
-| **Role-Based Access Control** | User authorization |
-| **Supabase RLS** | Cloud database isolation |
-| **Private Object Storage** | Evidence access control |
+    EVIDENCE
+        --> HASH["SHA-256 Fingerprint"]
 
----
+    HASH
+        --> OP{"Choose Operation"}
 
-# 🧪 Reproducible Demo Dataset
+    OP
+        --> RECOVER["Recover"]
 
-RE:TRACE includes a deterministic forensic test image.
+    OP
+        --> ERASE["Sanitize"]
 
-The fixture contains:
+    RECOVER
+        --> ARTIFACTS["Recovered Artifacts"]
 
-| Artifact | Quantity |
-|---|---:|
-| JPEG | 3 |
-| PNG | 2 |
-| PDF | 2 |
-| ZIP | 1 |
-| **Total** | **8** |
+    ARTIFACTS
+        --> CONFIDENCE["Validate & Score"]
 
-This gives the team and evaluators a repeatable recovery experiment with known ground truth.
+    ERASE
+        --> READBACK["Read-Back Verification"]
 
----
+    READBACK
+        --> CHALLENGE["Recovery Challenge"]
 
-# 🎬 Suggested Evaluation Demo
+    CONFIDENCE
+        --> EVENT["Activity Provenance"]
 
-A complete RE:TRACE demonstration can be performed as follows.
+    CHALLENGE
+        --> EVENT
 
-## Step 1 — Authenticate
+    EVENT
+        --> TIMELINE["Automatic Timeline"]
 
-Sign in as an investigator.
+    EVENT
+        --> AUDIT["SHA-256 Audit Chain"]
 
-## Step 2 — Create a Case
+    TIMELINE
+        --> REPORT["Forensic Report"]
 
-Create a new investigation case.
+    AUDIT
+        --> REPORT
 
-## Step 3 — Add Evidence
+    REPORT
+        --> PDF["PDF"]
 
-Generate or upload a demo forensic image.
-
-The system generates its SHA-256 fingerprint.
-
-## Step 4 — Recover Evidence
-
-Run **File Carving & Recovery**.
-
-Recover supported formats:
-
-- JPEG
-- PNG
-- PDF
-- ZIP
-
-Review:
-
-- Classification
-- Structure validation
-- Confidence
-- SHA-256 hash
-
-## Step 5 — Generate Recovery Report
-
-Create a PDF or JSON forensic output.
-
-## Step 6 — Sanitize
-
-Use a disposable working copy and start the secure erasure workflow.
-
-## Step 7 — Verify
-
-Perform read-back verification.
-
-## Step 8 — Challenge the Result
-
-Run the recovery engine against the sanitized copy.
-
-Display one of the following:
-
-```text
-PASS
-WARNING
-INCONCLUSIVE
-```
-
-## Step 9 — Review Timeline
-
-Open the automatically generated chronological activity timeline.
-
-## Step 10 — Verify Audit Integrity
-
-Validate the SHA-256 hash chain.
-
-## Step 11 — Generate Final Report
-
-Generate the sanitization certificate and forensic report.
-
----
-
-# 📚 Standards & Technical Guidance
-
-The project references recognized sanitization and evidence-handling guidance, including:
-
-- **NIST SP 800-88 Rev. 2**
-- **IEEE 2883**
-- Digital evidence integrity and chain-of-custody principles
-- **DoD 5220.22-M** as a legacy/reference overwrite approach
-
-These are used as engineering references while designing the prototype.
-
-> **Important:** RE:TRACE does not claim formal certification or independently validated standards conformance.
-
----
-
-# ✅ What Is Currently Implemented
-
-| Capability | Current Prototype Status |
-|---|---|
-| Case-based workflow | ✅ Implemented |
-| User authentication | ✅ Implemented |
-| Role-based access | ✅ Implemented |
-| Raw image processing | ✅ Implemented |
-| Secure working-copy erasure | ✅ Implemented |
-| File/folder batch erasure | ✅ Implemented |
-| JPEG recovery | ✅ Implemented |
-| PNG recovery | ✅ Implemented |
-| PDF recovery | ✅ Implemented |
-| ZIP recovery | ✅ Implemented |
-| Structure validation | ✅ Implemented |
-| Explainable recovery confidence | ✅ Implemented |
-| SHA-256 evidence hashing | ✅ Implemented |
-| Independent sanitization validation | ✅ Implemented |
-| Activity tracking | ✅ Implemented |
-| Automatic case timeline | ✅ Implemented |
-| SHA-256 audit chain | ✅ Implemented |
-| PDF / JSON reports | ✅ Implemented |
-| Physical HDD/SSD/NVMe sanitization | 🔄 Local hardware integration / future deployment |
-| Fragmented-file reconstruction | 🛣️ Roadmap |
-
----
-
-# ⚠️ Honest Prototype Boundaries
-
-RE:TRACE is currently a **hackathon prototype**, not a certified production forensic suite.
-
-Current limitations include:
-
-- The hosted version does not directly execute ATA/NVMe commands on a visitor's physical storage device.
-- Hosted media types are controlled/declarative profiles.
-- Physical-drive support requires a local privileged hardware agent.
-- Fragmented-file reconstruction remains future work.
-- Metadata cleanup is limited by the controlled prototype environment.
-- Recovery currently focuses on JPEG, PNG, PDF, and ZIP.
-- Hash chaining is tamper-evident rather than absolutely immutable against a fully privileged database or host administrator.
-- Hostile or untrusted forensic images should receive stronger isolation before production deployment.
-
-These limitations are documented intentionally so that the prototype demonstrates **real working capability without overstating implementation**.
-
----
-
-# 💻 Run Locally
-
-## Requirements
-
-Install:
-
-- Python **3.12**
-- Node.js **22.12+**
-- Git
-
----
-
-## 1. Clone the Repository
-
-```bash
-git clone https://github.com/Yemireddy-Pragnavi/Re-Trace.git
-cd Re-Trace
+    REPORT
+        --> JSON["JSON"]
 ```
 
 ---
 
-# 🪟 Windows Setup
+# Technical Stack
 
-## 2. Create Python Virtual Environment
-
-```powershell
-py -3.12 -m venv .venv
-```
-
-## 3. Install Backend Dependencies
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r backend\requirements.txt
-```
-
-## 4. Create Backend Environment File
-
-```powershell
-Copy-Item backend\.env.example backend\.env
-```
-
-Configure the required environment variables inside:
-
-```text
-backend/.env
-```
-
-Do not commit private credentials or production secrets to GitHub.
-
-## 5. Start Backend
-
-```powershell
-cd backend
-..\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
-
-Backend API:
-
-```text
-http://127.0.0.1:8000
-```
-
-FastAPI documentation:
-
-```text
-http://127.0.0.1:8000/docs
-```
+| Layer | Technology | Purpose |
+|---|---|---|
+| **Frontend** | React | Investigator interface |
+| **Frontend Language** | TypeScript | Type-safe UI development |
+| **Frontend Tooling** | Vite | Development and production builds |
+| **Backend Language** | Python | Core processing logic |
+| **API** | FastAPI | Local API and application services |
+| **Local Database** | SQLite | Local metadata persistence |
+| **Cloud Database** | Supabase PostgreSQL | Cloud metadata storage |
+| **Authentication** | Supabase Auth | User authentication |
+| **Authorization** | Role-Based Access + Supabase RLS | Access isolation |
+| **Object Storage** | Supabase Storage | Private controlled evidence/file storage |
+| **Integrity** | SHA-256 | Evidence fingerprinting and audit chaining |
+| **Local Storage** | Filesystem | Controlled forensic evidence/output storage |
+| **Deployment** | Vercel | Hosted frontend prototype |
 
 ---
 
-## 6. Start Frontend
-
-Open another terminal:
-
-```powershell
-cd frontend
-npm ci
-npm run dev
-```
-
-Frontend:
-
-```text
-http://localhost:5173
-```
-
----
-
-# 🍎 macOS / Linux Setup
-
-## Create Virtual Environment
-
-```bash
-python3.12 -m venv .venv
-```
-
-## Install Backend Dependencies
-
-```bash
-.venv/bin/python -m pip install -r backend/requirements.txt
-```
-
-## Create Environment File
-
-```bash
-cp backend/.env.example backend/.env
-```
-
-## Start Backend
-
-```bash
-cd backend
-../.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
-
-Then open another terminal:
-
-```bash
-cd frontend
-npm ci
-npm run dev
-```
-
----
-
-# 🧪 Testing
-
-## Backend Tests
-
-```bash
-cd backend
-pytest -q
-```
-
-## Frontend Production Build
-
-```bash
-cd frontend
-npm run build
-```
-
----
-
-# 📂 Repository Structure
+# Repository Structure
 
 ```text
 Re-Trace/
 │
 ├── backend/
+│   │
 │   ├── app/
 │   │   ├── auth.py
 │   │   ├── engines.py
@@ -997,10 +1177,19 @@ Re-Trace/
 │   │   ├── reports.py
 │   │   └── store.py
 │   │
-│   └── tests/
+│   ├── tests/
+│   │
+│   ├── requirements.txt
+│   ├── .env.example
+│   └── .env
 │
 ├── frontend/
-│   └── src/
+│   │
+│   ├── src/
+│   │
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.*
 │
 ├── docs/
 │
@@ -1020,190 +1209,857 @@ Re-Trace/
 
 ---
 
-# 🧩 Important Source Files
+# Important Source Files
 
-| File | Purpose |
+| File | Responsibility |
 |---|---|
 | `backend/app/auth.py` | Authentication and session handling |
-| `backend/app/engines.py` | Sanitization, carving, validation, and demo fixtures |
-| `backend/app/main.py` | API routes and application control |
-| `backend/app/store.py` | Persistence, timeline, and audit records |
-| `backend/app/reports.py` | PDF/JSON forensic reporting |
-| `backend/app/native_adapter.py` | Local/native integration abstraction |
-| `frontend/src/` | Public landing page and investigator workspace |
+| `backend/app/engines.py` | Recovery, sanitization, validation and demo processing |
+| `backend/app/main.py` | FastAPI routes and application control |
+| `backend/app/store.py` | Persistence, activity, timeline and audit data |
+| `backend/app/reports.py` | PDF / JSON forensic reporting |
+| `backend/app/native_adapter.py` | Native/local hardware integration abstraction |
+| `frontend/src/` | Investigator workspace and public frontend |
 
 ---
 
-# 🔐 Security Design Principles
+# Investigation Workflow
 
-RE:TRACE is designed around several core security principles:
+## 1. Authenticate
 
-### Evidence Integrity
-
-Evidence and important outputs are fingerprinted using **SHA-256** so investigators can detect unexpected modification.
-
-### Read-Only Recovery
-
-Recovery operations are designed to avoid modifying the original forensic source.
-
-### Controlled Sanitization
-
-Hosted sanitization operations are performed against disposable working copies instead of directly targeting a visitor's physical storage device.
-
-### Least-Privilege Access
-
-User actions are restricted according to assigned roles.
-
-### Accountability
-
-Important actions are connected to:
+The investigator signs into RE:TRACE.
 
 ```text
-User
+Login
+  ↓
+Authentication
+  ↓
+Session Created
+  ↓
+Role Verified
+  ↓
+Dashboard
+```
+
+---
+
+## 2. Create Case
+
+Create a case and enter relevant investigation information.
+
+Example:
+
+```text
+Case ID: CASE-001
+Title: Removable Media Investigation
+Investigator: Assigned User
+Priority: High
+Status: Active
+```
+
+---
+
+## 3. Register Evidence
+
+Select or create an evidence source.
+
+Supported prototype inputs include:
+
+- raw disk images;
+- uploaded files;
+- folders;
+- generated forensic test media.
+
+RE:TRACE generates a SHA-256 fingerprint for the registered source.
+
+---
+
+## 4. Choose Operation
+
+The investigator can choose between the principal workflows:
+
+```text
+Evidence
+   │
+   ├── File Recovery
+   │
+   ├── File / Folder Erasure
+   │
+   └── Controlled Media Sanitization
+```
+
+---
+
+# Operation Guide
+
+## File Carving & Recovery
+
+1. Authenticate as an investigator.
+2. Create or open a case.
+3. Register the forensic/test image.
+4. Verify the source fingerprint.
+5. Open **File Carving & Recovery**.
+6. Start the recovery operation.
+7. Allow RE:TRACE to scan the raw source.
+8. Review detected artifacts.
+9. Inspect:
+   - type;
+   - structure validation;
+   - confidence;
+   - SHA-256.
+10. Export recovered evidence where appropriate.
+11. Generate the forensic recovery report.
+
+---
+
+# File & Folder Erasure
+
+1. Open a case.
+2. Navigate to the file/folder erasure workspace.
+3. Select:
+   - a file;
+   - multiple files;
+   - a folder;
+   - a batch of targets.
+4. Review target details.
+5. Run the controlled sanitization workflow.
+6. Review operation results.
+7. Verify supported absence checks.
+8. Review timeline and audit record.
+9. Generate a sanitization record.
+
+---
+
+# Sanitization Validation
+
+After sanitization:
+
+1. RE:TRACE performs supported verification.
+2. The sanitized working copy is provided to the recovery engine.
+3. The recovery engine searches again for supported artifacts.
+4. The validation layer generates:
+
+```text
+PASS
+WARNING
+INCONCLUSIVE
+```
+
+5. The validation result becomes part of:
+   - the activity timeline;
+   - the audit trail;
+   - the final report.
+
+---
+
+# Reproducible Demo Dataset
+
+RE:TRACE includes a deterministic forensic fixture for repeatable demonstrations.
+
+| Artifact | Quantity |
+|---|---:|
+| JPEG | 3 |
+| PNG | 2 |
+| PDF | 2 |
+| ZIP | 1 |
+| **Total** | **8** |
+
+Using a known test dataset allows evaluators to compare:
+
+```text
+Expected Artifacts
+        vs
+Recovered Artifacts
+```
+
+instead of relying on an unknown input.
+
+---
+
+# SIH Evaluation Demo
+
+A complete RE:TRACE demonstration can follow this sequence.
+
+```mermaid
+flowchart LR
+
+    A["1. Login"]
+      --> B["2. Create Case"]
+
+    B --> C["3. Register Evidence"]
+
+    C --> D["4. SHA-256"]
+
+    D --> E["5. Recover"]
+
+    E --> F["6. Review Evidence"]
+
+    F --> G["7. Generate Recovery Report"]
+
+    G --> H["8. Sanitize Working Copy"]
+
+    H --> I["9. Verify"]
+
+    I --> J["10. Recovery Challenge"]
+
+    J --> K["11. Review Timeline"]
+
+    K --> L["12. Verify Audit Chain"]
+
+    L --> M["13. Generate Final Report"]
+```
+
+### Step 1 — Login
+
+Authenticate as an investigator.
+
+### Step 2 — Create Case
+
+Create a new investigation case.
+
+### Step 3 — Register Evidence
+
+Upload or generate a forensic test image.
+
+### Step 4 — Fingerprint Source
+
+RE:TRACE generates its SHA-256 value.
+
+### Step 5 — Recover Evidence
+
+Run the recovery engine.
+
+Expected fixture formats:
+
+```text
+JPEG
+PNG
+PDF
+ZIP
+```
+
+### Step 6 — Review Recovery
+
+Inspect:
+
+- classification;
+- structure validation;
+- confidence;
+- source association;
+- SHA-256.
+
+### Step 7 — Generate Recovery Report
+
+Export the initial forensic report.
+
+### Step 8 — Sanitize
+
+Use a disposable copy and run the controlled sanitization workflow.
+
+### Step 9 — Verify
+
+Perform supported read-back verification.
+
+### Step 10 — Challenge the Sanitization Result
+
+Run the recovery engine again against the sanitized copy.
+
+Show:
+
+```text
+PASS
+     or
+WARNING
+     or
+INCONCLUSIVE
+```
+
+### Step 11 — Review Timeline
+
+Display all major operations in chronological order.
+
+### Step 12 — Validate Audit Integrity
+
+Verify the SHA-256 event chain.
+
+### Step 13 — Generate Final Report
+
+Generate the sanitization certificate and forensic report.
+
+---
+
+# Security & Forensic Integrity Model
+
+RE:TRACE follows several security principles.
+
+## Evidence Preservation
+
+Recovery operations are designed to work against the forensic/test source without modifying the original source.
+
+```text
+Original Source
+      ↓
+Read-Only Processing
+      ↓
+Recovered Copy
+```
+
+---
+
+## Evidence Fingerprinting
+
+Important evidence sources and outputs can receive SHA-256 fingerprints.
+
+```text
+SHA-256(Source)
+      =
+Evidence Fingerprint
+```
+
+A later hash comparison can reveal unexpected modification.
+
+---
+
+## Controlled Destructive Operations
+
+The cloud-hosted prototype does not directly erase visitors' physical storage devices.
+
+Instead:
+
+```text
+Original Data
+     ↓
+Controlled / Disposable Copy
+     ↓
+Sanitization
+     ↓
+Verification
+```
+
+This allows the workflow to be demonstrated without exposing physical storage devices to unsafe remote operations.
+
+---
+
+## Access Control
+
+The prototype supports role-based access.
+
+| Role | Access |
+|---|---|
+| **Admin** | Administrative and case-wide access |
+| **Investigator** | Case creation and forensic operations |
+| **Viewer** | Read-only access to assigned information |
+
+---
+
+## Audit Integrity
+
+Events are connected through SHA-256 hash chaining.
+
+If an earlier record changes, later chain verification can detect the inconsistency.
+
+---
+
+# Standards & Engineering References
+
+RE:TRACE uses recognized technical guidance as engineering references.
+
+| Reference | Use in RE:TRACE |
+|---|---|
+| **NIST SP 800-88 Rev. 2** | Media sanitization guidance |
+| **IEEE 2883** | Sanitization-related engineering reference |
+| **Digital Evidence Integrity Principles** | Evidence preservation and verification |
+| **Chain-of-Custody Principles** | Case and activity provenance |
+| **DoD 5220.22-M** | Legacy/reference overwrite approach |
+
+> RE:TRACE does **not** claim formal NIST, IEEE, government, laboratory, or forensic-product certification.
+
+These references guide the engineering approach rather than representing external certification.
+
+---
+
+# What Is Implemented
+
+| Capability | Status |
+|---|---|
+| Case-based workflow | ✅ Implemented |
+| Authentication | ✅ Implemented |
+| Role-based access | ✅ Implemented |
+| Evidence registration | ✅ Implemented |
+| SHA-256 source hashing | ✅ Implemented |
+| Raw image processing | ✅ Implemented |
+| JPEG recovery | ✅ Implemented |
+| PNG recovery | ✅ Implemented |
+| PDF recovery | ✅ Implemented |
+| ZIP recovery | ✅ Implemented |
+| Structure validation | ✅ Implemented |
+| Recovery confidence | ✅ Implemented |
+| Secure working-copy erasure | ✅ Implemented |
+| File/folder batch erasure | ✅ Implemented |
+| Independent sanitization validation | ✅ Implemented |
+| Activity provenance | ✅ Implemented |
+| Automatic case timeline | ✅ Implemented |
+| SHA-256 audit chain | ✅ Implemented |
+| PDF reporting | ✅ Implemented |
+| JSON reporting | ✅ Implemented |
+| Physical HDD sanitization | 🔄 Native integration roadmap |
+| Physical SSD sanitization | 🔄 Native integration roadmap |
+| Direct NVMe sanitization | 🔄 Native integration roadmap |
+| Fragmented-file reconstruction | 🛣️ Roadmap |
+
+---
+
+# Prototype Boundaries
+
+RE:TRACE is currently an **SIH prototype**, not a certified commercial forensic suite.
+
+Current boundaries include:
+
+- the deployed version does not execute direct ATA/NVMe sanitization commands against a user's physical device;
+- hosted media profiles are controlled/declarative;
+- direct physical storage integration requires a local privileged hardware component;
+- recovery currently focuses on JPEG, PNG, PDF, and ZIP;
+- fragmented file reconstruction is not currently implemented;
+- controlled prototype environments limit certain metadata-erasure capabilities;
+- SHA-256 audit chaining is tamper-evident but not absolutely immutable against an attacker with full control over the database and host;
+- production processing of hostile forensic images would require stronger sandboxing and isolation.
+
+These limitations are documented intentionally.
+
+The objective is to demonstrate **real implemented capability without presenting future functionality as already complete**.
+
+---
+
+# Installation & Prerequisites
+
+## Requirements
+
+Install:
+
+- Python **3.12**
+- Node.js **22.12+**
+- Git
+
+---
+
+# Quick Start — Windows
+
+## 1. Clone Repository
+
+```bash
+git clone https://github.com/Yemireddy-Pragnavi/Re-Trace.git
+cd Re-Trace
+```
+
+---
+
+## 2. Create Python Environment
+
+```powershell
+py -3.12 -m venv .venv
+```
+
+---
+
+## 3. Install Backend Dependencies
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r backend\requirements.txt
+```
+
+---
+
+## 4. Create Environment Configuration
+
+```powershell
+Copy-Item backend\.env.example backend\.env
+```
+
+Configure the required values inside:
+
+```text
+backend/.env
+```
+
+> Never commit production API keys, database secrets, service-role keys, passwords, or other credentials into the repository.
+
+---
+
+## 5. Start Backend
+
+```powershell
+cd backend
+
+..\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Backend:
+
+```text
+http://127.0.0.1:8000
+```
+
+FastAPI documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## 6. Start Frontend
+
+Open another terminal.
+
+```powershell
+cd frontend
+
+npm ci
+
+npm run dev
+```
+
+Frontend:
+
+```text
+http://localhost:5173
+```
+
+---
+
+# macOS / Linux Setup
+
+Create the Python environment:
+
+```bash
+python3.12 -m venv .venv
+```
+
+Install dependencies:
+
+```bash
+.venv/bin/python -m pip install -r backend/requirements.txt
+```
+
+Create the backend environment file:
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+Start the backend:
+
+```bash
+cd backend
+
+../.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Open another terminal and start the frontend:
+
+```bash
+cd frontend
+
+npm ci
+
+npm run dev
+```
+
+---
+
+# Testing
+
+## Backend Tests
+
+```bash
+cd backend
+
+pytest -q
+```
+
+---
+
+## Frontend Production Build
+
+```bash
+cd frontend
+
+npm run build
+```
+
+---
+
+# Design Principles
+
+RE:TRACE was built around six principles.
+
+### 1. Preserve Context
+
+No important forensic operation should exist without a case.
+
+### 2. Preserve Integrity
+
+Evidence sources and important outputs should have fingerprints.
+
+### 3. Separate Evidence from Operations
+
+Recovery should avoid modifying the original source.
+
+### 4. Verify Destructive Operations
+
+A sanitization command reporting success should not be the final assurance step.
+
+### 5. Preserve Accountability
+
+Important actions should identify the responsible user and timestamp.
+
+### 6. Avoid Overclaiming
+
+The system should clearly distinguish:
+
+```text
+Implemented
+      vs
+Prototype Simulation
+      vs
+Future Hardware Integration
+```
+
+---
+
+# Why We Built RE:TRACE
+
+RE:TRACE was not created simply to provide another:
+
+```text
+DELETE
+```
+
+button.
+
+It was also not created merely to provide another:
+
+```text
+RECOVER
+```
+
+button.
+
+The larger idea is to connect both operations to evidence.
+
+A recovered artifact should have:
+
+```text
+Source
++
+Case
++
+Hash
++
+Validation
++
+Confidence
+```
+
+A sanitization event should have:
+
+```text
+Method
++
+Verification
++
+Recovery Challenge
++
+Result
++
+Audit Record
+```
+
+An investigator action should have:
+
+```text
+Identity
 +
 Session
 +
 Case
-+
-Source
-+
-Operation
 +
 Timestamp
 +
 Result
 ```
 
-### Tamper Evidence
+That creates the RE:TRACE assurance model:
 
-Audit records are linked through cryptographic hashes, making unexpected historical modification detectable during validation.
+```text
+       RECOVER
+          │
+          ▼
+       VALIDATE
+          │
+          ▼
+SOURCE ─► CASE ─► TRACE ─► AUDIT ─► REPORT
+          ▲
+          │
+        VERIFY
+          ▲
+          │
+       SANITIZE
+```
 
 ---
 
-# 🌟 What Makes RE:TRACE Different?
+# What Makes RE:TRACE Different?
 
-The primary idea behind RE:TRACE is not simply:
+RE:TRACE is not positioned as simply another forensic carving tool or another erasure utility.
 
-```text
-ERASE DATA
-```
-
-or:
+Its distinguishing workflow is:
 
 ```text
-RECOVER DATA
-```
-
-Instead, the complete lifecycle is:
-
-```text
-IDENTIFY
-   ↓
 REGISTER
-   ↓
-HASH
-   ↓
+    ↓
+FINGERPRINT
+    ↓
 RECOVER / SANITIZE
-   ↓
+    ↓
 VERIFY
-   ↓
+    ↓
 CHALLENGE
-   ↓
-TRACK
-   ↓
+    ↓
+TRACE
+    ↓
 AUDIT
-   ↓
+    ↓
 REPORT
 ```
 
-This creates a workflow where technical actions produce evidence that can be reviewed later.
+The **post-sanitization recovery challenge** connects the recovery and sanitization engines into one assurance loop.
+
+The **activity provenance layer** connects operations to the investigator, case, source, and result.
+
+The **audit chain** provides tamper evidence.
+
+The **reporting engine** turns the complete process into a reviewable record.
 
 ---
 
-# 💭 Why We Built RE:TRACE
+# Roadmap
 
-The goal was not to create another tool with an **Erase** button.
+Future development can extend the current prototype with:
 
-It was also not to build another utility that only says **Recover**.
+### Native Storage Integration
 
-We wanted every important action to have context.
+- physical HDD access;
+- ATA secure erase integration;
+- SSD secure erase;
+- cryptographic erase;
+- NVMe sanitize;
+- NVMe secure format;
+- removable media enumeration.
 
-A recovered file should have:
+### Recovery Engine
 
-- A source
-- A hash
-- A confidence result
-- A case
+- additional signature families;
+- filesystem-aware deleted-file recovery;
+- fragmented-file reconstruction;
+- smarter boundary detection;
+- richer artifact validation;
+- partition-aware analysis.
 
-A sanitization operation should have:
+### Forensic Assurance
 
-- A method
-- Verification
-- A validation result
-- An audit record
+- stronger chain-of-custody workflows;
+- signed reports;
+- examiner signatures;
+- external verification bundles;
+- stronger event-ledger storage;
+- evidence export manifests.
 
-Every investigator action should have:
+### Security
 
-- An identity
-- A timestamp
-- A case
-- A result
+- isolated forensic parsing;
+- sandboxing for hostile media;
+- stricter storage encryption;
+- improved secret management;
+- privileged native agent isolation.
 
-That is the idea behind **RE:TRACE**.
+### Enterprise Workflow
+
+- collaborative investigations;
+- advanced case permissions;
+- evidence assignment;
+- investigation status workflows;
+- searchable audit history;
+- report templates.
 
 ---
 
-# 🗺️ Roadmap
+# Project Philosophy
 
-Future development can extend RE:TRACE with:
+Digital evidence systems should be able to answer:
 
-- Physical HDD sanitization through a privileged local agent
-- ATA Secure Erase integration
-- NVMe sanitize / secure-format integration
-- SSD cryptographic erase support
-- Additional recovery formats
-- Fragmented-file reconstruction
-- Filesystem-aware recovery
-- Stronger forensic sandboxing
-- External verification exports
-- Signed forensic reports
-- Advanced chain-of-custody workflows
-- Scalable case collaboration
+```text
+What happened?
+Who performed it?
+When did it happen?
+Which evidence was involved?
+Was the evidence altered?
+What was recovered?
+What was sanitized?
+How was the result verified?
+Can the record itself be trusted?
+```
+
+RE:TRACE is designed around making those questions easier to answer.
 
 ---
 
-# 👥 Team
+# Team
 
 ## Cryptic Crew
 
 **Smart India Hackathon 2026**
 
-**Problem Statement ID:** `SIH26149`
+**Problem Statement:** `SIH26149`
 
-### RE:TRACE
+### Project
 
-> **Recover what matters.**  
-> **Erase what must never return.**  
-> **Verify with trusted proof.**
+**RE:TRACE — Integrated Secure Data Erasure + Advanced File Recovery**
 
 ---
 
-## 🔗 Project Links
+# Project Links
 
-**Live Prototype:**  
-https://re-trace-phi.vercel.app/
+### Live Prototype
 
-**GitHub Repository:**  
-https://github.com/Yemireddy-Pragnavi/Re-Trace
+[https://re-trace-phi.vercel.app/](https://re-trace-phi.vercel.app/)
+
+### GitHub Repository
+
+[https://github.com/Yemireddy-Pragnavi/Re-Trace](https://github.com/Yemireddy-Pragnavi/Re-Trace)
 
 ---
 
-<div align="center">
+# Disclaimer
 
-### RE:TRACE
+RE:TRACE is currently developed as a **Smart India Hackathon prototype** for secure data-erasure and digital-forensics research and demonstration.
 
-**Integrated Secure Data Erasure + Advanced File Recovery**
+Use forensic recovery or sanitization functionality only on media for which you have appropriate authorization.
 
-Built by **Team Cryptic Crew** for **Smart India Hackathon 2026**
+The project does not claim formal certification, legal admissibility, guaranteed physical irrecoverability, or independently validated compliance with the referenced standards.
 
-</div>
+---
+
+<p align="center">
+  <strong>RE:TRACE</strong>
+</p>
+
+<p align="center">
+  Recover what matters.<br>
+  Erase what must never return.<br>
+  Verify with trusted proof.
+</p>
+
+<p align="center">
+  <strong>Team Cryptic Crew · Smart India Hackathon 2026</strong>
+</p>
